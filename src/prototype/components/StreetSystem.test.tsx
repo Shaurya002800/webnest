@@ -3,6 +3,25 @@ import { describe, expect, it } from 'vitest'
 import { StreetSystem } from './StreetSystem'
 
 describe('interactive street system', () => {
+  it('keeps the city readable while practical light stays stronger than the magenta accent', async () => {
+    const cityModule = await import('./StreetCity3D') as unknown as {
+      getStreetLightingProfile?: () => {
+        exposure: number
+        ambientIntensity: number
+        fogDensity: number
+        practicalIntensity: number
+        accentIntensity: number
+      }
+    }
+    const profile = cityModule.getStreetLightingProfile?.()
+
+    expect(profile).toBeDefined()
+    expect(profile?.exposure).toBeGreaterThanOrEqual(1.08)
+    expect(profile?.ambientIntensity).toBeGreaterThanOrEqual(2.2)
+    expect(profile?.fogDensity).toBeLessThanOrEqual(.01)
+    expect(profile?.practicalIntensity).toBeGreaterThan(profile?.accentIntensity ?? Infinity)
+  })
+
   it('renders a real-time 3D street and all six connected stages', () => {
     render(<StreetSystem reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /connected online business system/i })).toBeInTheDocument()

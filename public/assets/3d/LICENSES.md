@@ -25,3 +25,18 @@ The files in `city/` are redistributed and adapted under Creative Commons Zero 1
 - Changes in WebNest: renamed, selected from the original pack, loaded with custom runtime materials and lighting.
 
 CC0-1.0 license text: https://creativecommons.org/publicdomain/zero/1.0/
+
+## Poly Haven — Coffee shop interior props
+
+All four assets are downloaded as the web-efficient 1K glTF variants and are published under CC0.
+
+- Arm Chair 01 by Kirill Sannikov: https://polyhaven.com/a/ArmChair_01
+  - Files used: `coffee-shop/armchair/`
+- Chandelier 03 by Kirill Sannikov: https://polyhaven.com/a/Chandelier_03
+  - Files used: `coffee-shop/chandelier/`
+- Modern Coffee Table 01 by Amin: https://polyhaven.com/a/modern_coffee_table_01
+  - Files used: `coffee-shop/coffee-table/`
+- Coffee Cart 01 by Joe Seabuhr: https://polyhaven.com/a/CoffeeCart_01
+  - Files used: `coffee-shop/coffee-cart/`
+
+Changes in WebNest: models are normalized, reused, positioned within a custom real-time room, and lit with WebNest's espresso, walnut and aged-brass art direction. Original texture folders and glTF-relative paths are preserved.

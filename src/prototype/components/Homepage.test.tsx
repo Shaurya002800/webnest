@@ -37,4 +37,11 @@ describe('homepage conversion and FAQ', () => {
     expect(screen.getByRole('region', { name: /connected online business system/i })).toBeInTheDocument()
     expect(document.querySelector('.system-line')).not.toBeInTheDocument()
   })
+
+  it('continues from the street into the real-time coffee shop scene', () => {
+    render(<Homepage />)
+    expect(screen.getByTestId('coffee-shop')).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /everything your business needs/i })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: /royal 3d coffee shop interior/i })).toBeInTheDocument()
+  })
 })

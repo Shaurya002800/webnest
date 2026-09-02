@@ -8,6 +8,50 @@ type Props = { reducedMotion: boolean }
 
 const CITY_ASSETS = '/assets/3d/city'
 
+type StreetLightingProfile = {
+  background: number
+  fogColor: number
+  fogDensity: number
+  exposure: number
+  ambientSky: number
+  ambientGround: number
+  ambientIntensity: number
+  moonIntensity: number
+  washIntensity: number
+  skylineIntensity: number
+  practicalIntensity: number
+  accentIntensity: number
+  mappedMaterial: number
+  windowMaterial: number
+  windowEmissive: number
+  windowEmissiveIntensity: number
+  roadColor: number
+  roadRoughness: number
+}
+
+export function getStreetLightingProfile(): StreetLightingProfile {
+  return {
+    background: 0x050a14,
+    fogColor: 0x050a14,
+    fogDensity: .009,
+    exposure: 1.12,
+    ambientSky: 0x8198b5,
+    ambientGround: 0x080b0f,
+    ambientIntensity: 2.35,
+    moonIntensity: 4.15,
+    washIntensity: 3.1,
+    skylineIntensity: 50,
+    practicalIntensity: 44,
+    accentIntensity: 30,
+    mappedMaterial: 0x8e9dab,
+    windowMaterial: 0x45566b,
+    windowEmissive: 0x5d2b18,
+    windowEmissiveIntensity: 1.05,
+    roadColor: 0x0d151f,
+    roadRoughness: .14,
+  }
+}
+
 function normalizedModel(source: THREE.Object3D, targetHeight: number) {
   const wrapper = new THREE.Group()
   wrapper.add(source)
@@ -23,7 +67,7 @@ function normalizedModel(source: THREE.Object3D, targetHeight: number) {
   return wrapper
 }
 
-function applyCityMaterial(root: THREE.Object3D, baseColor: THREE.ColorRepresentation) {
+function applyCityMaterial(root: THREE.Object3D, baseColor: THREE.ColorRepresentation, lighting: StreetLightingProfile) {
   root.traverse((child) => {
     if (!(child instanceof THREE.Mesh)) return
     const sourceMaterials = Array.isArray(child.material) ? child.material : [child.material]
@@ -31,7 +75,7 @@ function applyCityMaterial(root: THREE.Object3D, baseColor: THREE.ColorRepresent
       const source = sourceMaterial as THREE.MeshStandardMaterial
       const isWindow = /glass|window|interior/.test(source.name?.toLowerCase() ?? '')
       return new THREE.MeshStandardMaterial({
-        color: source.map ? 0x67717c : isWindow ? 0x303b4a : baseColor,
+        color: source.map ? lighting.mappedMaterial : isWindow ? lighting.windowMaterial : baseColor,
         map: source.map ?? null,
         alphaMap: source.alphaMap ?? null,
         transparent: source.transparent,
@@ -39,8 +83,8 @@ function applyCityMaterial(root: THREE.Object3D, baseColor: THREE.ColorRepresent
         side: source.side,
         roughness: isWindow ? .28 : .7,
         metalness: isWindow ? .42 : .1,
-        emissive: isWindow ? 0x2b1b12 : 0x000000,
-        emissiveIntensity: isWindow ? .7 : 0,
+        emissive: isWindow ? lighting.windowEmissive : 0x000000,
+        emissiveIntensity: isWindow ? lighting.windowEmissiveIntensity : 0,
       })
     })
 
@@ -73,10 +117,11 @@ export function StreetCity3D({ reducedMotion }: Props) {
     const canvas = canvasRef.current
     const shell = shellRef.current
     if (!canvas || !shell || typeof WebGLRenderingContext === 'undefined') return
+    const lighting = getStreetLightingProfile()
 
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x02040a)
-    scene.fog = new THREE.FogExp2(0x02040a, .012)
+    scene.background = new THREE.Color(lighting.background)
+    scene.fog = new THREE.FogExp2(lighting.fogColor, lighting.fogDensity)
 
     const camera = new THREE.PerspectiveCamera(39, 1, .1, 180)
     const cameraTarget = new THREE.Vector3(0, 3.8, -30)
@@ -86,14 +131,14 @@ export function StreetCity3D({ reducedMotion }: Props) {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: !matchMedia('(max-width: 700px)').matches, powerPreference: 'high-performance' })
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = .96
+    renderer.toneMappingExposure = lighting.exposure
     renderer.shadowMap.enabled = false
 
     const city = new THREE.Group()
     scene.add(city)
 
-    scene.add(new THREE.HemisphereLight(0x667994, 0x050607, 1.85))
-    const moon = new THREE.DirectionalLight(0xa6bdd7, 3)
+    scene.add(new THREE.HemisphereLight(lighting.ambientSky, lighting.ambientGround, lighting.ambientIntensity))
+    const moon = new THREE.DirectionalLight(0xb2c9e4, lighting.moonIntensity)
     moon.position.set(-14, 25, 10)
     scene.add(moon)
 
@@ -101,34 +146,39 @@ export function StreetCity3D({ reducedMotion }: Props) {
       [-7, 4.2, 0], [7, 4.2, -9], [-7, 4.2, -21], [7, 4.2, -34], [-7, 4.2, -47],
     ] as const
     practicals.forEach(([x, y, z], index) => {
-      const light = new THREE.PointLight(index === 3 ? 0xad4b70 : 0xe1aa6e, index === 3 ? 22 : 30, 20, 2.1)
+      const light = new THREE.PointLight(
+        index === 3 ? 0xc44d82 : 0xf0b878,
+        index === 3 ? lighting.accentIntensity : lighting.practicalIntensity,
+        23,
+        2.05,
+      )
       light.position.set(x, y, z)
       city.add(light)
     })
 
-    const streetWash = new THREE.DirectionalLight(0x536b88, 2.2)
+    const streetWash = new THREE.DirectionalLight(0x6484a8, lighting.washIntensity)
     streetWash.position.set(18, 12, 12)
     city.add(streetWash)
-    const skylineGlow = new THREE.PointLight(0x395878, 34, 76, 2.1)
+    const skylineGlow = new THREE.PointLight(0x47789f, lighting.skylineIntensity, 82, 2.05)
     skylineGlow.position.set(0, 21, -52)
     city.add(skylineGlow)
 
     const wetRoad = new THREE.Mesh(
       new THREE.PlaneGeometry(13.5, 115),
-      new THREE.MeshPhysicalMaterial({ color: 0x080b10, roughness: .2, metalness: .16, clearcoat: 1, clearcoatRoughness: .12 }),
+      new THREE.MeshPhysicalMaterial({ color: lighting.roadColor, roughness: lighting.roadRoughness, metalness: .2, clearcoat: 1, clearcoatRoughness: .08 }),
     )
     wetRoad.rotation.x = -Math.PI / 2
     wetRoad.position.set(0, -.05, -40)
     city.add(wetRoad)
 
-    const pavementMaterial = new THREE.MeshStandardMaterial({ color: 0x11151a, roughness: .88, metalness: .03 })
+    const pavementMaterial = new THREE.MeshStandardMaterial({ color: 0x19212a, roughness: .82, metalness: .04 })
     ;[-8.25, 8.25].forEach((x) => {
       const pavement = new THREE.Mesh(new THREE.BoxGeometry(3, .22, 115), pavementMaterial)
       pavement.position.set(x, .02, -40)
       city.add(pavement)
     })
 
-    const laneMaterial = new THREE.MeshBasicMaterial({ color: 0x8a765c, transparent: true, opacity: .28 })
+    const laneMaterial = new THREE.MeshBasicMaterial({ color: 0xb29a73, transparent: true, opacity: .36 })
     ;[-2.1, 2.1].forEach((x) => {
       const lane = new THREE.Mesh(new THREE.PlaneGeometry(.08, 106), laneMaterial)
       lane.rotation.x = -Math.PI / 2
@@ -140,12 +190,12 @@ export function StreetCity3D({ reducedMotion }: Props) {
     const gltf = new GLTFLoader()
     const loadFbx = (name: string, height: number, color: THREE.ColorRepresentation) =>
       fbx.loadAsync(`${CITY_ASSETS}/${name}`).then((model) => {
-        applyCityMaterial(model, color)
+        applyCityMaterial(model, color, lighting)
         return normalizedModel(model, height)
       })
     const loadGlb = (name: string, height: number, color: THREE.ColorRepresentation) =>
       gltf.loadAsync(`${CITY_ASSETS}/${name}`).then(({ scene: model }) => {
-        applyCityMaterial(model, color)
+        applyCityMaterial(model, color, lighting)
         return normalizedModel(model, height)
       })
 
@@ -155,15 +205,15 @@ export function StreetCity3D({ reducedMotion }: Props) {
       if (hasStartedLoading) return
       hasStartedLoading = true
       Promise.all([
-        loadFbx('building-large.fbx', 18, 0x111721),
-        loadFbx('building-medium.fbx', 14, 0x161a21),
-        loadFbx('building-small.fbx', 10, 0x14181d),
-        loadGlb('kenney-commercial/skyscraper-a.glb', 34, 0x10151e),
-        loadGlb('kenney-commercial/skyscraper-c.glb', 42, 0x0d121a),
-        loadGlb('kenney-roads/street-light.glb', 4.2, 0x262a2e),
-        loadGlb('kenney-roads/street-light-double.glb', 4.4, 0x25292d),
-        loadGlb('kenney-roads/traffic-light.glb', 4.5, 0x202427),
-        loadGlb('kenney-roads/street-sign.glb', 3.3, 0x24282b),
+        loadFbx('building-large.fbx', 18, 0x1b2735),
+        loadFbx('building-medium.fbx', 14, 0x222a35),
+        loadFbx('building-small.fbx', 10, 0x1b232c),
+        loadGlb('kenney-commercial/skyscraper-a.glb', 34, 0x172333),
+        loadGlb('kenney-commercial/skyscraper-c.glb', 42, 0x131d2a),
+        loadGlb('kenney-roads/street-light.glb', 4.2, 0x343b43),
+        loadGlb('kenney-roads/street-light-double.glb', 4.4, 0x323941),
+        loadGlb('kenney-roads/traffic-light.glb', 4.5, 0x2d353c),
+        loadGlb('kenney-roads/street-sign.glb', 3.3, 0x30383f),
       ]).then(([large, medium, small, towerA, towerC, lamp, doubleLamp, trafficLight, streetSign]) => {
         if (disposed) return
         const buildings = [large, medium, small]

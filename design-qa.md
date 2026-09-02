@@ -198,11 +198,60 @@ The implementation retains the approved editorial split, six-stage path, dark st
 - Mobile typography, horizontal waypoint browsing, WebGL framing, and zero-error browser diagnostics were inspected at 390 × 844.
 - No actionable P0/P1/P2 findings remain.
 
+#### Pass 3 — passed after visibility feedback
+
+- [P2] User review found the 3D background too dim even though the restrained direction was correct.
+  - Fix: raised the ACES exposure and cool ambient fill, brightened material response, strengthened practical amber windows and skyline light, reduced fog density, increased wet-road clearcoat, and softened the dark overlay.
+- The refreshed matched-size comparison in `street-design-qa-comparison.png` shows readable façades and street depth while keeping the practical amber lighting stronger than the selective magenta accent.
+- The 390 × 844 inspection preserves title contrast, waypoint legibility, and atmospheric depth without overexposing the mobile frame.
+- No actionable P0/P1/P2 findings remain.
+
 ### Primary interactions and diagnostics
 
 - Exercised opening, mid-route camera movement, active waypoint progression, butterfly handoff, and the onward services link.
 - Verified the city does not begin loading while it is far below the viewport, then becomes ready before the section reaches the top.
 - Browser console warnings/errors: none on a fresh run.
 - Automated component tests, complete test suite, production build, and Sites worker tests are required in the final verification pass.
+
+## Real-time 3D Coffee Shop QA
+
+### Evidence
+
+- Source visual truth: Figma node `22:21`, saved as `public/assets/reference/coffee-shop-figma.png` at 1672 × 941 px.
+- Rendered desktop: `coffee-shop-implementation-desktop.png` at 1672 × 941 CSS px.
+- Combined comparison: `coffee-shop-design-qa-comparison.png`, with source and implementation in one matched-size review surface.
+- Rendered mobile: `coffee-shop-implementation-mobile.png` at 390 × 844 CSS px.
+- State: service midpoint; 3D assets loaded; global butterfly settled above the right side of the bar.
+
+### Full-view comparison evidence
+
+The matched comparison confirms the approved hierarchy: left editorial headline and supporting copy, a central coffee bar, warm overhead fixture, right-side WebNest menu, four lower service pillars and a closing services CTA. The implementation intentionally replaces the Figma photograph with a real-time 3D room built from licensed furniture, lighting and coffee props while retaining the espresso-black, walnut, brass, cream and ember-red art direction.
+
+### Comparison history
+
+#### Pass 1 — blocked
+
+- [P1] The first WebGL interior was too sparse and the central coffee prop read as a small cart rather than the scene's service-bar anchor.
+  - Fix: increased the model scale and proximity, let the custom walnut counter hide the cart base, added shelf depth and coffee-bag silhouettes, and strengthened practical/ambient light while retaining cinematic contrast.
+- [P2] The first service pillars were materially shorter than the Figma reference and collapsed their offerings into dense inline strings.
+  - Fix: increased the desktop cards to the reference's lower-third height and rendered each offering as an individual bullet while retaining semantic button labels.
+- [P2] The first headline scale and mixed-case treatment drifted from the Figma's editorial hierarchy.
+  - Fix: restored uppercase display treatment, reduced the final size and preserved the ember-red italic emphasis.
+- [P2] Three.js emitted a deprecated soft-shadow-map warning.
+  - Fix: moved the renderer to the supported `PCFShadowMap` policy and covered it with a regression assertion.
+
+#### Pass 2 — passed
+
+- Desktop and source were compared at identical 1672 × 941 dimensions in `coffee-shop-design-qa-comparison.png`.
+- The 390 × 844 frame preserves readable intro copy, the live 3D bar, a swipeable service rail and the services CTA without horizontal page overflow.
+- The real-time scene uses the selected 1K CC0 glTF props rather than a café image, and the global butterfly maintains the street → bar → rear-door handoff.
+- No actionable P0/P1/P2 findings remain.
+
+### Primary interactions and diagnostics
+
+- Exercised threshold entry, service midpoint, active-pillar hover/focus/click, rear-door exit and `Explore all services` anchor.
+- Verified the active service uses `aria-pressed`, all four service controls remain keyboard-native, and the 3D canvas has an accessible name.
+- Fresh browser console warnings/errors: none.
+- Focused choreography and component tests: 15 passed before the full verification run.
 
 final result: passed

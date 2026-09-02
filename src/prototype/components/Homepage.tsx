@@ -10,6 +10,7 @@ import { ButterflyDirector } from './ButterflyDirector'
 import { LiveFlame } from './LiveFlame'
 import { ExteriorTransition } from './ExteriorTransition'
 import { StreetSystem } from './StreetSystem'
+import { CoffeeShopScene } from './CoffeeShopScene'
 
 const services = [
   { icon: Compass, title: 'Brand strategy', copy: 'Positioning, audience clarity and a plan your whole team can use.' },
@@ -96,6 +97,7 @@ export function Homepage() {
       </ExteriorTransition>
 
       <StreetSystem reducedMotion={motion.tier === 'still'} />
+      <CoffeeShopScene reducedMotion={motion.tier === 'still'} />
 
       <section className="services scene" id="services"><div className="scene-shell"><SceneHeading id="services" /><div className="service-grid">{services.map(({ icon: Icon, title, copy }, index) => <article className="service-card" key={title}><span className="service-index">0{index + 1}</span><Icon /><h3>{title}</h3><p>{copy}</p><a href={`${CTA_ROUTES.project}?service=${encodeURIComponent(title)}`}>Explore <ArrowRight /></a></article>)}</div></div></section>
 
