@@ -1,12 +1,25 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type LiveFlameProps = { reducedMotion?: boolean }
 
 export function LiveFlame({ reducedMotion = false }: LiveFlameProps) {
+  const shellRef = useRef<HTMLSpanElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [visible, setVisible] = useState(() => typeof IntersectionObserver === 'undefined')
 
   useEffect(() => {
-    if (reducedMotion) return
+    const shell = shellRef.current
+    if (!shell || typeof IntersectionObserver === 'undefined') {
+      setVisible(true)
+      return
+    }
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: '20%' })
+    observer.observe(shell)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (reducedMotion || !visible) return
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -57,13 +70,12 @@ export function LiveFlame({ reducedMotion = false }: LiveFlameProps) {
     }
     animation = requestAnimationFrame(draw)
     return () => cancelAnimationFrame(animation)
-  }, [reducedMotion])
+  }, [reducedMotion, visible])
 
   return (
-    <span className="live-flame" data-testid="live-flame" data-reduced-motion={String(reducedMotion)} aria-hidden="true">
+    <span ref={shellRef} className="live-flame" data-testid="live-flame" data-reduced-motion={String(reducedMotion)} data-animating={String(!reducedMotion && visible)} aria-hidden="true">
       <canvas ref={canvasRef} width="120" height="180" />
       <span className="live-flame__still" />
     </span>
   )
 }
-

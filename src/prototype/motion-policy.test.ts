@@ -11,5 +11,8 @@ describe('motion policy', () => {
   ] as const)('selects the expected tier', (input, expected) => {
     expect(getMotionPolicy(input).tier).toBe(expected)
   })
-})
 
+  it('keeps scrolling native even at the full cinematic tier', () => {
+    expect(getMotionPolicy({ width: 1440, reducedMotion: false, lowPower: false }).smoothScroll).toBe(false)
+  })
+})

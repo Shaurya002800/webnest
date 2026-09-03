@@ -4,10 +4,9 @@ export function getMotionPolicy({ reducedMotion, width, lowPower }: MotionPolicy
   const tier = reducedMotion ? 'still' : lowPower || width < 680 ? 'minimal' : width < 1100 ? 'lite' : 'full'
   return {
     tier,
-    smoothScroll: tier === 'full',
+    smoothScroll: false,
     continuousFlight: tier === 'full' || tier === 'lite',
     parallax: tier === 'full',
     ambientLayers: tier === 'full' ? 3 : tier === 'lite' ? 2 : 1,
   } as const
 }
-

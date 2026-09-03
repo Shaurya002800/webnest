@@ -5,10 +5,10 @@ import { getCoffeeShopLightingProfile } from './CoffeeShop3D'
 import { CoffeeShopScene } from './CoffeeShopScene'
 
 describe('royal coffee shop scene', () => {
-  it('renders a real-time 3D interior and the four Figma service pillars', () => {
+  it('renders a real-time 3D interior and the four Figma service pillars', async () => {
     render(<CoffeeShopScene reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /everything your business needs/i })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /royal 3d coffee shop interior/i })).toBeInTheDocument()
+    expect(await screen.findByRole('img', { name: /royal 3d coffee shop interior/i })).toBeInTheDocument()
     expect(document.querySelector('img[src*="coffee-shop"]')).not.toBeInTheDocument()
     expect(screen.getAllByRole('button')).toHaveLength(4)
     expect(screen.getByRole('link', { name: /explore all services/i })).toHaveAttribute('href', '#services')

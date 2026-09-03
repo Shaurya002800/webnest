@@ -3,7 +3,6 @@ import {
   ArrowDown, ArrowRight, Check, Code, Compass, GlobeHemisphereWest, List,
   Minus, Palette, Plus, X,
 } from '@phosphor-icons/react'
-import Lenis from 'lenis'
 import { CTA_ROUTES, SCENES, getSceneById } from '../scene-model'
 import { getMotionPolicy } from '../motion-policy'
 import { ButterflyDirector } from './ButterflyDirector'
@@ -11,6 +10,8 @@ import { LiveFlame } from './LiveFlame'
 import { ExteriorTransition } from './ExteriorTransition'
 import { StreetSystem } from './StreetSystem'
 import { CoffeeShopScene } from './CoffeeShopScene'
+import { CherryGardenScene } from './CherryGardenScene'
+import { ApartmentFacadeScene } from './ApartmentFacadeScene'
 
 const services = [
   { icon: Compass, title: 'Brand strategy', copy: 'Positioning, audience clarity and a plan your whole team can use.' },
@@ -79,14 +80,6 @@ function Faq() {
 
 export function Homepage() {
   const motion = useMotionPolicy()
-  useEffect(() => {
-    if (!motion.smoothScroll) return
-    const lenis = new Lenis({ duration: 1.05, smoothWheel: true })
-    let raf = 0
-    const frame = (time: number) => { lenis.raf(time); raf = requestAnimationFrame(frame) }
-    raf = requestAnimationFrame(frame)
-    return () => { cancelAnimationFrame(raf); lenis.destroy() }
-  }, [motion.smoothScroll])
 
   return <div className={`webnest motion-${motion.tier}`}>
     <a className="skip-link" href="#main">Skip to content</a><Header /><ButterflyDirector reducedMotion={!motion.continuousFlight} />
@@ -98,12 +91,12 @@ export function Homepage() {
 
       <StreetSystem reducedMotion={motion.tier === 'still'} />
       <CoffeeShopScene reducedMotion={motion.tier === 'still'} />
+      <CherryGardenScene reducedMotion={motion.tier === 'still'} />
+      <ApartmentFacadeScene reducedMotion={motion.tier === 'still'} />
 
       <section className="services scene" id="services"><div className="scene-shell"><SceneHeading id="services" /><div className="service-grid">{services.map(({ icon: Icon, title, copy }, index) => <article className="service-card" key={title}><span className="service-index">0{index + 1}</span><Icon /><h3>{title}</h3><p>{copy}</p><a href={`${CTA_ROUTES.project}?service=${encodeURIComponent(title)}`}>Explore <ArrowRight /></a></article>)}</div></div></section>
 
       <section className="industries scene" id="industries"><div className="scene-shell industry-layout"><SceneHeading id="industries" /><div className="industry-list">{industries.map((industry, index) => <a key={industry} href={`${CTA_ROUTES.project}?industry=${encodeURIComponent(industry)}`}><span>0{index + 1}</span>{industry}<ArrowRight /></a>)}</div></div></section>
-
-      <section className="why scene" id="why-webnest"><div className="scene-shell why-layout"><div className="window-grid" aria-hidden="true">{Array.from({ length: 15 }, (_, index) => <span key={index} className={index === 7 ? 'is-lit' : ''} />)}</div><div><SceneHeading id="why-webnest" /><ul className="value-list"><li><Check />Direct access to the people doing the work</li><li><Check />Strategy and execution under one roof</li><li><Check />Decisions explained in plain language</li></ul></div></div></section>
 
       <section className="work scene" id="work"><div className="scene-shell"><SceneHeading id="work" /><div className="work-grid"><article className="work-card work-card--one"><div className="work-mark">A</div><p>Identity · Hospitality</p><h3>Aster House</h3><span>+64% direct enquiries</span></article><article className="work-card work-card--two"><div className="work-mark">nami</div><p>Digital · Wellness</p><h3>Nami Rituals</h3><span>2.3× conversion rate</span></article><article className="work-card work-card--three"><div className="work-mark">N/01</div><p>Platform · Technology</p><h3>Northstar OS</h3><span>Launch in 7 weeks</span></article></div></div></section>
 

@@ -38,10 +38,34 @@ describe('homepage conversion and FAQ', () => {
     expect(document.querySelector('.system-line')).not.toBeInTheDocument()
   })
 
-  it('continues from the street into the real-time coffee shop scene', () => {
+  it('continues from the street into the real-time coffee shop scene', async () => {
     render(<Homepage />)
     expect(screen.getByTestId('coffee-shop')).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /everything your business needs/i })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /royal 3d coffee shop interior/i })).toBeInTheDocument()
+    expect(await screen.findByRole('img', { name: /royal 3d coffee shop interior/i })).toBeInTheDocument()
+  })
+
+  it('continues through the cafe rear door into the lightweight cherry garden', () => {
+    const { container } = render(<Homepage />)
+    const coffee = screen.getByTestId('coffee-shop')
+    const cherry = screen.getByTestId('cherry-garden')
+    expect(screen.getByRole('region', { name: /different businesses/i })).toBeInTheDocument()
+    const film = cherry.querySelector<HTMLVideoElement>('video[autoplay][loop][playsinline]')
+    expect(film).toBeInTheDocument()
+    expect(film?.muted).toBe(true)
+    expect(cherry.querySelector('canvas')).not.toBeInTheDocument()
+    expect(container.querySelectorAll('video[autoplay][loop]')).toHaveLength(1)
+    expect(coffee.compareDocumentPosition(cherry) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('continues from the cherry branches into the supplied apartment façade still', () => {
+    const { container } = render(<Homepage />)
+    const cherry = screen.getByTestId('cherry-garden')
+    const apartment = screen.getByTestId('apartment-facade')
+    expect(screen.getByRole('region', { name: /more than a website agency/i })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: /cinematic apartment façade at night/i })).toHaveAttribute('src', '/assets/reference/apartment-facade-royal.webp')
+    expect(apartment.querySelector('canvas')).not.toBeInTheDocument()
+    expect(cherry.compareDocumentPosition(apartment) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(container.querySelector('.window-grid')).not.toBeInTheDocument()
   })
 })

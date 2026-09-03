@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 import {
   ArrowRight, ChartLineUp, ChatCircleDots, CursorClick, GearSix, MagnifyingGlass, ShieldCheck,
 } from '@phosphor-icons/react'
 import { getStreetSystemState, type StreetSystemState } from '../street-system'
-import { StreetCity3D } from './StreetCity3D'
+import { ViewportScene } from './ViewportScene'
+
+const StreetCity3D = lazy(() => import('./StreetCity3D').then((module) => ({ default: module.StreetCity3D })))
 
 const steps = [
   { number: '01', title: 'Get discovered', detail: 'Google · Social media · Ads · SEO', Icon: MagnifyingGlass },
@@ -87,7 +89,7 @@ export function StreetSystem({ reducedMotion }: Props) {
     >
       <div className="street-system__sticky">
         <div className="street-system__camera">
-          <StreetCity3D reducedMotion={reducedMotion} />
+          <ViewportScene label="street-city"><Suspense fallback={null}><StreetCity3D reducedMotion={reducedMotion} /></Suspense></ViewportScene>
         </div>
         <img className="street-system__route" src="/assets/generated/street-route.png" alt="" aria-hidden="true" />
         <div className="street-system__shade" aria-hidden="true" />

@@ -2,6 +2,8 @@ import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getStreetSystemState } from '../street-system'
 import { getCoffeeShopState } from '../coffee-shop'
+import { getCherryGardenState } from '../cherry-garden'
+import { getApartmentFacadeState } from '../apartment-facade'
 import { ButterflyDirector } from './ButterflyDirector'
 
 describe('global butterfly director', () => {
@@ -21,5 +23,25 @@ describe('global butterfly director', () => {
     expect(butterfly.dataset.realm).toBe('coffee-shop')
     expect(butterfly.style.getPropertyValue('--flight-x')).toBe('79vw')
     expect(butterfly.style.getPropertyValue('--flight-y')).toBe('49vh')
+  })
+
+  it('hands the same butterfly through the cafe rear door into the cherry branches', () => {
+    const { container } = render(<ButterflyDirector reducedMotion={false} />)
+    const butterfly = container.querySelector('.butterfly-director') as HTMLElement
+    window.dispatchEvent(new CustomEvent('webnest:cherry-progress', { detail: getCherryGardenState(.56) }))
+    expect(butterfly.dataset.realm).toBe('cherry-garden')
+    expect(butterfly.style.getPropertyValue('--flight-x')).toBe('67vw')
+    expect(butterfly.style.getPropertyValue('--flight-y')).toBe('31vh')
+    expect(butterfly.style.getPropertyValue('--flight-opacity')).toBe('0')
+  })
+
+  it('hands the same butterfly from the cherry branches into the apartment windows', () => {
+    const { container } = render(<ButterflyDirector reducedMotion={false} />)
+    const butterfly = container.querySelector('.butterfly-director') as HTMLElement
+    window.dispatchEvent(new CustomEvent('webnest:apartment-progress', { detail: getApartmentFacadeState(.56) }))
+    expect(butterfly.dataset.realm).toBe('apartment-facade')
+    expect(butterfly.style.getPropertyValue('--flight-x')).toBe('52vw')
+    expect(butterfly.style.getPropertyValue('--flight-y')).toBe('52vh')
+    expect(butterfly.style.getPropertyValue('--flight-opacity')).toBe('0')
   })
 })
