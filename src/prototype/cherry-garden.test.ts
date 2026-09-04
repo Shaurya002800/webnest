@@ -32,7 +32,7 @@ describe('cherry garden choreography', () => {
     expect(branch.y).toBeLessThanOrEqual(38)
     expect(branch.scale).toBeGreaterThan(doorway.scale)
     expect(exit.x).toBeGreaterThan(branch.x)
-    expect(exit.opacity).toBe(0)
+    expect(exit.opacity).toBe(1)
   })
 
   it('pushes through the cafe door before settling into the Figma street composition', () => {

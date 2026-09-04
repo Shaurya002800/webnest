@@ -111,7 +111,7 @@ export function getCherryGardenState(rawProgress: number): CherryGardenState {
         { progress: .8, value: -8 },
         { progress: 1, value: -17 },
       ]),
-      opacity: Math.min(reveal(progress, 0, .08), 1 - reveal(progress, .9, 1)),
+      opacity: 1,
     },
   }
 }

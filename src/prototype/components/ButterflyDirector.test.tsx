@@ -32,7 +32,7 @@ describe('global butterfly director', () => {
     expect(butterfly.dataset.realm).toBe('cherry-garden')
     expect(butterfly.style.getPropertyValue('--flight-x')).toBe('67vw')
     expect(butterfly.style.getPropertyValue('--flight-y')).toBe('31vh')
-    expect(butterfly.style.getPropertyValue('--flight-opacity')).toBe('0')
+    expect(butterfly.style.getPropertyValue('--flight-opacity')).toBe('1')
   })
 
   it('hands the same butterfly from the cherry branches into the apartment windows', () => {
@@ -42,6 +42,19 @@ describe('global butterfly director', () => {
     expect(butterfly.dataset.realm).toBe('apartment-facade')
     expect(butterfly.style.getPropertyValue('--flight-x')).toBe('52vw')
     expect(butterfly.style.getPropertyValue('--flight-y')).toBe('52vh')
+    expect(butterfly.style.getPropertyValue('--flight-opacity')).toBe('1')
+  })
+
+  it('continues the butterfly through the late journey and lets it rest in the final room', () => {
+    const { container } = render(<ButterflyDirector reducedMotion={false} />)
+    const butterfly = container.querySelector('.butterfly-director') as HTMLElement
+    window.dispatchEvent(new CustomEvent('webnest:late-progress', { detail: { realm: 'selected-work', x: 72, y: 24, scale: .32, rotation: -6, opacity: .84 } }))
+    expect(butterfly.dataset.realm).toBe('selected-work')
+    expect(butterfly.style.getPropertyValue('--flight-x')).toBe('72vw')
+    expect(butterfly.style.getPropertyValue('--flight-opacity')).toBe('0.84')
+
+    window.dispatchEvent(new CustomEvent('webnest:late-progress', { detail: { realm: 'final-room', x: 73, y: 58, scale: .3, rotation: 2, opacity: 0 } }))
+    expect(butterfly.dataset.realm).toBe('final-room')
     expect(butterfly.style.getPropertyValue('--flight-opacity')).toBe('0')
   })
 })

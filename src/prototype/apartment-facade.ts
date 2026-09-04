@@ -90,7 +90,7 @@ export function getApartmentFacadeState(rawProgress: number): ApartmentFacadeSta
         { progress: .38, value: 42 },
         { progress: .56, value: 52 },
         { progress: .74, value: 61 },
-        { progress: 1, value: 78 },
+        { progress: 1, value: 22 },
       ]),
       scale: interpolate(progress, [
         { progress: 0, value: .18 },
@@ -105,7 +105,7 @@ export function getApartmentFacadeState(rawProgress: number): ApartmentFacadeSta
         { progress: .75, value: 12 },
         { progress: 1, value: 18 },
       ]),
-      opacity: Math.min(reveal(progress, 0, .06), 1 - reveal(progress, .9, 1)),
+      opacity: 1,
     },
   }
 }

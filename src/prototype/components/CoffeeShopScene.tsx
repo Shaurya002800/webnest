@@ -60,6 +60,7 @@ export function CoffeeShopScene({ reducedMotion }: Props) {
 
   return (
     <section ref={ref} className="coffee-shop scene" id="coffee-shop" aria-label="Everything your business needs to grow online" data-testid="coffee-shop" data-phase="threshold" onPointerMove={onPointerMove} onPointerLeave={clearPointer} style={{ '--coffee-active-pillar': activePillar } as CSSProperties}>
+      <span id="services" className="scene-anchor" aria-hidden="true" />
       <div className="coffee-shop__sticky">
         <div className="coffee-shop__camera"><ViewportScene label="coffee-shop"><Suspense fallback={null}><CoffeeShop3D reducedMotion={reducedMotion} /></Suspense></ViewportScene></div>
         <div className="coffee-shop__shade" aria-hidden="true" />

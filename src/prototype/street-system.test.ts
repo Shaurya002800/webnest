@@ -31,6 +31,6 @@ describe('street system choreography', () => {
     expect(midpoint.x).toBeGreaterThan(arrival.x)
     expect(midpoint.y).toBeLessThan(arrival.y)
     expect(exit.scale).toBeLessThan(midpoint.scale)
-    expect(exit.opacity).toBe(0)
+    expect(exit.opacity).toBe(1)
   })
 })

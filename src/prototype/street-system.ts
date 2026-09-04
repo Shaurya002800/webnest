@@ -91,7 +91,7 @@ export function getStreetSystemState(rawProgress: number): StreetSystemState {
         { progress: .68, value: -7 },
         { progress: 1, value: 12 },
       ]),
-      opacity: 1 - reveal(progress, .9, 1),
+      opacity: 1,
     },
   }
 }

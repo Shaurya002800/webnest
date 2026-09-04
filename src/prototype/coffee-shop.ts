@@ -98,7 +98,7 @@ export function getCoffeeShopState(rawProgress: number): CoffeeShopState {
         { progress: .78, value: -9 },
         { progress: 1, value: -18 },
       ]),
-      opacity: Math.min(reveal(progress, 0, .08), 1 - reveal(progress, .9, 1)),
+      opacity: 1,
     },
   }
 }

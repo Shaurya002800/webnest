@@ -27,6 +27,6 @@ describe('coffee shop choreography', () => {
     expect(bar.scale).toBeGreaterThan(threshold.scale)
     expect(exit.x).toBeGreaterThan(bar.x)
     expect(exit.y).toBeLessThan(bar.y)
-    expect(exit.opacity).toBe(0)
+    expect(exit.opacity).toBe(1)
   })
 })

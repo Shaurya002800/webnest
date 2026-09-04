@@ -93,7 +93,7 @@ export function CherryGardenScene({ reducedMotion }: Props) {
   }
 
   return (
-    <section ref={ref} className="cherry-garden cherry-garden--media scene" id="business-solutions" aria-labelledby="cherry-title" data-testid="cherry-garden" data-phase="doorway" onPointerMove={onPointerMove} onPointerLeave={clearPointer} style={{ '--cherry-active-journey': activeJourney } as CSSProperties}>
+    <section ref={ref} className="cherry-garden cherry-garden--media scene" id="industries" aria-labelledby="cherry-title" data-testid="cherry-garden" data-phase="doorway" onPointerMove={onPointerMove} onPointerLeave={clearPointer} style={{ '--cherry-active-journey': activeJourney } as CSSProperties}>
       <div className="cherry-garden__sticky">
         <div className="cherry-garden__camera" aria-hidden="true">
           <img className="cherry-garden__plate" src="/assets/reference/cherry-garden-royal.webp" alt="" loading="lazy" decoding="async" />

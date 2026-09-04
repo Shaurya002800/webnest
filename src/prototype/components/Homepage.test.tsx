@@ -11,10 +11,10 @@ describe('homepage conversion and FAQ', () => {
 
   it('opens an FAQ answer', () => {
     render(<Homepage />)
-    const question = screen.getByRole('button', { name: /how long does a project take/i })
+    const question = screen.getByRole('button', { name: /how much does a project cost/i })
     fireEvent.click(question)
     expect(question).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByText(/most focused builds launch in/i)).toBeVisible()
+    expect(screen.getByText(/projects depend on scope/i)).toBeVisible()
   })
 
   it('uses a real exterior building plate for the second frame', () => {
@@ -67,5 +67,54 @@ describe('homepage conversion and FAQ', () => {
     expect(apartment.querySelector('canvas')).not.toBeInTheDocument()
     expect(cherry.compareDocumentPosition(apartment) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(container.querySelector('.window-grid')).not.toBeInTheDocument()
+  })
+
+  it('continues from the apartment into every cinematic late-journey frame in order', () => {
+    render(<Homepage />)
+    const apartment = screen.getByTestId('apartment-facade')
+    const selectedWork = screen.getByTestId('selected-work-scene')
+    const process = screen.getByTestId('process-scene')
+    const pricing = screen.getByTestId('pricing-scene')
+    const audit = screen.getByTestId('audit-scene')
+    const faq = screen.getByTestId('faq-scene')
+    const finalCta = screen.getByTestId('final-cta-scene')
+
+    expect(screen.getByRole('heading', { name: /built to solve real business problems/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /from business problem to growth system/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /start with what your business actually needs/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /not sure what your business needs/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /before you work with webnest/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /your next customer may already be looking for you/i })).toBeInTheDocument()
+
+    const sequence = [selectedWork, process, pricing, audit, faq, finalCta]
+    expect(apartment.compareDocumentPosition(sequence[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    sequence.slice(0, -1).forEach((scene, index) => {
+      expect(scene.compareDocumentPosition(sequence[index + 1]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    })
+  })
+
+  it('lets visitors actively explore project and process details', () => {
+    render(<Homepage />)
+    const selectedWork = screen.getByTestId('selected-work-scene')
+    const modelArena = screen.getByRole('button', { name: /modelarena/i })
+    fireEvent.pointerEnter(modelArena)
+    expect(modelArena).toHaveAttribute('aria-pressed', 'true')
+    expect(selectedWork).toHaveAttribute('data-active-project', '2')
+
+    const grow = screen.getByRole('button', { name: /05 grow/i })
+    fireEvent.click(grow)
+    expect(grow).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('process-scene')).toHaveAttribute('data-active-step', '4')
+  })
+
+  it('keeps pricing, audit, FAQ and final conversion actions functional', () => {
+    render(<Homepage />)
+    expect(screen.getByRole('link', { name: /^choose growth$/i })).toHaveAttribute('href', '/start-project?package=growth')
+    expect(screen.getAllByRole('link', { name: /get my free audit/i }).every((link) => link.getAttribute('href') === '/free-audit')).toBe(true)
+
+    const question = screen.getByRole('button', { name: /can you connect whatsapp/i })
+    fireEvent.click(question)
+    expect(question).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByText(/lead workflows, reminders, crm and automation/i)).toBeVisible()
   })
 })

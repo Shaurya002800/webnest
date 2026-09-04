@@ -3,7 +3,7 @@
 **Last updated:** 2026-09-03  
 **Repository:** `/Users/shaurya/Desktop/webnest`  
 **Current product stage:** Interactive homepage prototype in active development  
-**Current implementation milestone:** Frames 1–6 implemented; Frames 7–13 still need their final cinematic treatment
+**Current implementation milestone:** Frames 1–13 and both conversion routes are implemented; production backend, final content confirmation, and launch hardening remain
 
 ## 1. Purpose of this file
 
@@ -228,20 +228,20 @@ This prevents street and coffee WebGL worlds from remaining active together duri
 
 | # | Story frame | Current component/section | Status | Important notes |
 |---|---|---|---|---|
-| 0 | Global navigation and butterfly | `Header`, `ButterflyDirector` | Implemented, continuity fix needed | Header, anchors, mobile menu, persistent butterfly architecture exist. Butterfly is currently hidden in clean cherry/apartment frames. |
+| 0 | Global navigation and butterfly | `Header`, `ButterflyDirector` | Implemented across the full journey | Header, anchors, mobile menu, and one persistent butterfly now continue through every cinematic frame before fading in the final room. |
 | 1 | Studio room / homepage hero | `ExteriorTransition`, `LiveFlame` | Implemented and visually QA'd | Live browser-rendered candle flame, diagonal butterfly, two conversion CTAs, dark editorial room. |
 | 2 | Growth Problems exterior building | `ExteriorTransition` | Implemented and connected to hero | Hero copy fades in place; butterfly exits through the window; no duplicate empty-room frame. |
 | 3 | Connected-system street | `StreetSystem`, `StreetCity3D` | Implemented and visually QA'd | Real-time 3D New York-inspired street, wet road, licensed city props, six interactive waypoints, restrained practical lighting. |
 | 4 | Royal coffee shop / services | `CoffeeShopScene`, `CoffeeShop3D` | Implemented and visually QA'd | Real-time 3D interior, licensed 1K props, four service pillars, rear-door exit direction. |
-| 5 | Cherry-blossom business journeys | `CherryGardenScene` | Implemented with lightweight media; one continuity gap | Clean 293 KB WebP plate, live HTML content, six business journey controls, licensed 16-second 24 fps petal loop, no WebGL. Butterfly must be restored. |
-| 6 | Apartment façade / Why WebNest | `ApartmentFacadeScene` | Implemented with lightweight media and interaction; one continuity gap | Clean 188 KB WebP plate, live semantic copy, four interactive rooms, 10% hover/focus enlargement, smooth amber glow, no WebGL. Butterfly must be restored. |
-| 7 | Sky / selected work | Generic `#work` grid only | Cinematic frame not implemented | Current cards are a functional content fallback. Figma sky/portfolio treatment and apartment-to-sky transition remain. |
-| 8 | Rooftop / process | Generic `#process` list only | Cinematic frame not implemented | Current four-step process is functional. Rooftop environment and sky-to-rooftop transition remain. |
-| 9 | Staircase / pricing | Generic `#pricing` cards only | Cinematic frame not implemented | Pricing content and package links exist. Staircase environment and rooftop-to-stairs travel remain. |
-| 10 | Street / free audit | Generic `#audit` panel only | Cinematic frame not implemented | Audit proposition exists. Staircase-to-street transition and cinematic audit frame remain. |
-| 11 | Road / FAQ | Generic `#faq` accordion | Functionally implemented; cinematic frame not implemented | Accordion is keyboard-operable. Road environment and connected street journey remain. |
-| 12 | Return building/room / final CTA | Generic `#final-cta` | Functional fallback only | Final CTAs exist. Physical return to the original building and room is not built. |
-| 13 | Closing footer | `footer` | Basic implementation exists | Brand, email, anchors, copyright, and “Made after dark” exist. Final cinematic handoff needs completion. |
+| 5 | Cherry-blossom business journeys | `CherryGardenScene` | Implemented with lightweight media | Clean WebP plate, live HTML content, six business journey controls, licensed slow petal loop, visible butterfly, no WebGL. |
+| 6 | Apartment façade / Why WebNest | `ApartmentFacadeScene` | Implemented with lightweight media and interaction | Clean WebP plate, live semantic copy, four interactive rooms, hover/focus enlargement and amber glow, visible butterfly, no WebGL. |
+| 7 | Sky / selected work | `SelectedWorkScene` | Implemented from Figma node `25:30` | Clean moonlit city-canyon plate, three interactive concept panels, live copy, apartment-to-sky butterfly continuation. |
+| 8 | Rooftop / process | `ProcessScene` | Implemented | Clean moonlit rooftop plate and five interactive Understand → Plan → Build → Launch → Grow steps. |
+| 9 | Staircase / pricing | `PricingScene` | Implemented | Clean magenta stairwell plate, Starter/Growth/GrowthOS offers, preserved package query parameters, custom-quote route. |
+| 10 | Street / free audit | `AuditScene` | Implemented | Clean high-angle wet-street plate, six audit checks, canonical `/free-audit` CTA. |
+| 11 | Road / FAQ | `FaqRoadScene` | Implemented | Clean red-moon wet-road plate with a keyboard-operable six-question accordion. |
+| 12 | Return building/room / final CTA | `FinalRoomScene` | Implemented | Clean candlelit-room plate, final conversion choice, and butterfly rest/fade. |
+| 13 | Closing footer | `SiteFooter` | Implemented | Figma-aligned black editorial footer with brand statement, navigation, contact, and legal row. |
 
 ## 7. Implemented details
 
