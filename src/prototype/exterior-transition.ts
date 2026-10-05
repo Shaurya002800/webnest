@@ -1,3 +1,5 @@
+import { HERO_BUTTERFLY_ORIGIN } from './butterfly-path'
+
 export type ExteriorPhase = 'room' | 'window' | 'exterior' | 'building'
 
 export type ExteriorTransitionState = {
@@ -47,8 +49,8 @@ export function getExteriorTransitionState(rawProgress: number): ExteriorTransit
     contentOpacity: reveal(progress, .78, 1),
     notes: [reveal(progress, .65, .76), reveal(progress, .74, .85), reveal(progress, .84, .95)],
     butterfly: {
-      x: interpolate(progress, [{ progress: 0, value: 72 }, { progress: .18, value: 68 }, { progress: .42, value: 61 }, { progress: .58, value: 76 }, { progress: .72, value: 68 }, { progress: 1, value: 58 }]),
-      y: interpolate(progress, [{ progress: 0, value: 38 }, { progress: .18, value: 34 }, { progress: .42, value: 28 }, { progress: .58, value: 20 }, { progress: .72, value: 44 }, { progress: 1, value: 53 }]),
+      x: interpolate(progress, [{ progress: 0, value: HERO_BUTTERFLY_ORIGIN.x }, { progress: .18, value: 68 }, { progress: .42, value: 61 }, { progress: .58, value: 76 }, { progress: .72, value: 68 }, { progress: 1, value: 58 }]),
+      y: interpolate(progress, [{ progress: 0, value: HERO_BUTTERFLY_ORIGIN.y }, { progress: .18, value: 34 }, { progress: .42, value: 28 }, { progress: .58, value: 20 }, { progress: .72, value: 44 }, { progress: 1, value: 53 }]),
       scale: interpolate(progress, [{ progress: 0, value: 1 }, { progress: .18, value: .86 }, { progress: .42, value: .52 }, { progress: .58, value: .42 }, { progress: 1, value: .72 }]),
       rotation: interpolate(progress, [{ progress: 0, value: -8 }, { progress: .18, value: -18 }, { progress: .42, value: 13 }, { progress: .58, value: 7 }, { progress: 1, value: -6 }]),
     },

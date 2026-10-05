@@ -5,6 +5,11 @@ import { App } from './App'
 afterEach(() => window.history.pushState({}, '', '/'))
 
 describe('conversion routes', () => {
+  it('shows a progress indicator while the opening scene prepares', () => {
+    render(<App />)
+    expect(screen.getByRole('progressbar', { name: /opening scene/i })).toHaveAttribute('aria-valuenow', '0')
+  })
+
   it('renders the free audit journey at the canonical route', () => {
     window.history.pushState({}, '', '/free-audit')
     render(<App />)
