@@ -1,6 +1,9 @@
 import { type ReactNode, useEffect, useRef } from 'react'
 import { getExteriorTransitionState } from '../exterior-transition'
 import { getSceneById } from '../scene-model'
+import { useSiteTheme } from '../SiteTheme'
+import { getScenePlate } from '../scene-themes'
+import { LiveFlame } from './LiveFlame'
 
 const problems = [
   { number: '01', title: 'A brand that blends in', detail: 'Attention disappears when the story looks and sounds like everyone else.' },
@@ -13,6 +16,7 @@ type Props = { reducedMotion: boolean; children: ReactNode }
 export function ExteriorTransition({ reducedMotion, children }: Props) {
   const ref = useRef<HTMLElement>(null)
   const scene = getSceneById('problems')!
+  const { theme } = useSiteTheme()
 
   useEffect(() => {
     const element = ref.current
@@ -24,6 +28,11 @@ export function ExteriorTransition({ reducedMotion, children }: Props) {
       const travel = Math.max(rect.height - window.innerHeight, 1)
       const progress = Math.max(0, Math.min(1, -rect.top / travel))
       const state = getExteriorTransitionState(progress)
+      if (theme === 'morning') {
+        const blendToFlightPath = Math.max(0, 1 - progress / .18)
+        state.butterfly.x -= 32 * blendToFlightPath
+        state.butterfly.y -= 8 * blendToFlightPath
+      }
       element.dataset.phase = state.phase
       element.dataset.heroHidden = state.heroOpacity <= .02 ? 'true' : 'false'
       element.style.setProperty('--transition-progress', String(progress))
@@ -43,20 +52,25 @@ export function ExteriorTransition({ reducedMotion, children }: Props) {
     const update = () => {
       if (!ticking) { ticking = true; requestAnimationFrame(render) }
     }
-    render()
     window.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
-    return () => { window.removeEventListener('scroll', update); window.removeEventListener('resize', update) }
-  }, [reducedMotion])
+    const initialRender = requestAnimationFrame(render)
+    return () => { cancelAnimationFrame(initialRender); window.removeEventListener('scroll', update); window.removeEventListener('resize', update) }
+  }, [reducedMotion, theme])
 
   return (
     <section ref={ref} className="exterior-transition hero-journey scene" id="hero" aria-labelledby="hero-title" data-testid="hero-exterior-journey" data-phase="room">
       <div className="exterior-sticky">
         <div className="exterior-camera">
-          <img className="exterior-room" src="/assets/generated/hero-room-clean.png" alt="A candlelit studio overlooking a city at night" />
-          <img className="exterior-building" src="/assets/generated/building-night.png" alt="Night building outside the studio window" />
+          <div className="exterior-room-layer">
+            <img className="exterior-room" src={getScenePlate('heroRoom', theme)} alt={theme === 'morning' ? 'A sunlit studio overlooking the city in the morning' : 'A candlelit studio overlooking a city at night'} />
+          </div>
+          <img className="exterior-building" src={getScenePlate('building', theme)} alt={theme === 'morning' ? 'Sunlit city building in the morning' : 'Night building outside the studio window'} />
           <div className="exterior-vignette" aria-hidden="true" />
         </div>
+        {theme === 'night' ? <div className="exterior-flame-camera" aria-hidden="true">
+          <LiveFlame reducedMotion={reducedMotion} />
+        </div> : null}
         <div className="journey-hero-shade" aria-hidden="true" />
         {children}
         <div className="exterior-copy">

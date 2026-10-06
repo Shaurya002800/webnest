@@ -2,9 +2,26 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { App } from './App'
 
-afterEach(() => window.history.pushState({}, '', '/'))
+afterEach(() => {
+  window.history.pushState({}, '', '/')
+  window.localStorage.clear()
+  delete document.documentElement.dataset.theme
+})
 
 describe('conversion routes', () => {
+  it('defaults to morning and restores the night plates when toggled', () => {
+    render(<App />)
+    expect(document.documentElement).toHaveAttribute('data-theme', 'morning')
+    expect(screen.getByRole('img', { name: /sunlit city building in the morning/i })).toHaveAttribute('src', '/assets/generated/building-morning.webp')
+
+    fireEvent.click(screen.getByRole('button', { name: /switch to night theme/i }))
+
+    expect(document.documentElement).toHaveAttribute('data-theme', 'night')
+    expect(screen.getByRole('img', { name: /night building outside the studio window/i })).toHaveAttribute('src', '/assets/generated/building-night.png')
+    expect(screen.getByTestId('live-flame')).toBeInTheDocument()
+    expect(window.localStorage.getItem('webnest-theme')).toBe('night')
+  })
+
   it('shows a progress indicator while the opening scene prepares', () => {
     render(<App />)
     expect(screen.getByRole('progressbar', { name: /opening scene/i })).toHaveAttribute('aria-valuenow', '0')

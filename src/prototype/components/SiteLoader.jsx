@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { getLoaderButterflyPoint } from '../butterfly-path'
+import { useSiteTheme } from '../SiteTheme'
+import { getScenePlate } from '../scene-themes'
 
-const HOME_IMAGES = [
-  '/assets/generated/hero-room-clean.png',
-  '/assets/generated/building-night.png',
-  '/assets/generated/butterfly.png',
-]
-const INQUIRY_IMAGES = ['/assets/cinematic/final-bg.jpg', '/assets/generated/butterfly.png']
+const HOME_IMAGES = {
+  morning: [getScenePlate('heroRoom', 'morning'), getScenePlate('building', 'morning'), '/assets/generated/butterfly.png'],
+  night: [getScenePlate('heroRoom', 'night'), getScenePlate('building', 'night'), '/assets/generated/butterfly.png'],
+}
+const INQUIRY_IMAGES = {
+  morning: [getScenePlate('finalRoom', 'morning')],
+  night: [getScenePlate('finalRoom', 'night')],
+}
 const OPENING_FONTS = [
   '400 96px "Newsreader"',
   '500 96px "Newsreader"',
@@ -47,9 +51,10 @@ function preloadFont(descriptor) {
 }
 
 export function SiteLoader({ pathname }) {
+  const { theme } = useSiteTheme()
   const isInquiryPage = pathname === '/free-audit' || pathname === '/start-project'
-  const imageSources = isInquiryPage ? INQUIRY_IMAGES : HOME_IMAGES
-  const backdrop = isInquiryPage ? '/assets/cinematic/final-bg.jpg' : HOME_IMAGES[0]
+  const imageSources = (isInquiryPage ? INQUIRY_IMAGES : HOME_IMAGES)[theme]
+  const backdrop = getScenePlate(isInquiryPage ? 'finalRoom' : 'heroRoom', theme)
   const [progress, setProgress] = useState(0)
   const [displayProgress, setDisplayProgress] = useState(0)
   const [visible, setVisible] = useState(true)

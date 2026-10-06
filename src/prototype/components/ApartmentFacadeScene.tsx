@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 import { ArrowRight } from '@phosphor-icons/react'
 import { getApartmentFacadeState, type ApartmentFacadeState } from '../apartment-facade'
+import { useSiteTheme } from '../SiteTheme'
+import { getScenePlate } from '../scene-themes'
 
 type Props = { reducedMotion: boolean }
 
@@ -13,6 +15,7 @@ const principles = [
 
 export function ApartmentFacadeScene({ reducedMotion }: Props) {
   const ref = useRef<HTMLElement>(null)
+  const { theme } = useSiteTheme()
   const [activePrinciple, setActivePrinciple] = useState(0)
   const [illuminatedPrinciple, setIlluminatedPrinciple] = useState<number | null>(null)
 
@@ -75,7 +78,7 @@ export function ApartmentFacadeScene({ reducedMotion }: Props) {
     <section ref={ref} className="apartment-facade apartment-facade--plate scene" id="why-webnest" aria-labelledby="apartment-title" data-testid="apartment-facade" data-phase="tree-arrival" data-illuminated-window={illuminatedPrinciple ?? undefined} onPointerMove={onPointerMove} onPointerLeave={clearPointer} style={{ '--apartment-active-principle': activePrinciple } as CSSProperties}>
       <div className="apartment-facade__sticky">
         <div className="apartment-facade__camera">
-          <img className="apartment-facade__plate" src="/assets/reference/apartment-facade-royal.webp" alt="Cinematic apartment façade at night" loading="lazy" decoding="async" />
+          <img className="apartment-facade__plate" src={getScenePlate('apartment', theme)} alt={theme === 'morning' ? 'Cinematic apartment façade in morning light' : 'Cinematic apartment façade at night'} loading="lazy" decoding="async" />
         </div>
         <div className="apartment-facade__shade" aria-hidden="true" />
         <div className="apartment-facade__intro">

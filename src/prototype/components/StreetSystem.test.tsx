@@ -22,6 +22,16 @@ describe('interactive street system', () => {
     expect(profile?.practicalIntensity).toBeGreaterThan(profile?.accentIntensity ?? Infinity)
   })
 
+  it('has a separate daylight profile with readable streets and subdued practical lights', async () => {
+    const cityModule = await import('./StreetCity3D')
+    const profile = cityModule.getStreetLightingProfile('morning')
+
+    expect(profile.background).toBe(0xb8ced9)
+    expect(profile.fogDensity).toBeLessThan(.01)
+    expect(profile.practicalIntensity).toBeLessThan(profile.ambientIntensity * 4)
+    expect(profile.roadColor).toBeGreaterThan(0x333333)
+  })
+
   it('renders a real-time 3D street and all six connected stages', async () => {
     render(<StreetSystem reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /connected online business system/i })).toBeInTheDocument()

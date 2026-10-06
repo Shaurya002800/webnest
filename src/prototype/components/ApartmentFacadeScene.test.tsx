@@ -3,10 +3,10 @@ import { describe, expect, it } from 'vitest'
 import { ApartmentFacadeScene } from './ApartmentFacadeScene'
 
 describe('interactive apartment façade scene', () => {
-  it('uses the supplied high-quality façade still without creating a WebGL surface', () => {
+  it('uses the morning façade still without creating a WebGL surface', () => {
     const { container } = render(<ApartmentFacadeScene reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /more than a website agency/i })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /cinematic apartment façade at night/i })).toHaveAttribute('src', '/assets/reference/apartment-facade-royal.webp')
+    expect(screen.getByRole('img', { name: /cinematic apartment façade in morning light/i })).toHaveAttribute('src', '/assets/reference/apartment-facade-morning.webp')
     expect(container.querySelector('canvas')).not.toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 2, name: /more than a website agency/i })).toBeInTheDocument()
     expect(screen.getAllByRole('button')).toHaveLength(4)

@@ -2,8 +2,9 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import type { CoffeeShopState } from '../coffee-shop'
+import type { SiteTheme } from '../SiteTheme'
 
-type Props = { reducedMotion: boolean }
+type Props = { reducedMotion: boolean; theme: SiteTheme }
 
 const ASSET_ROOT = '/assets/3d/coffee-shop'
 
@@ -19,11 +20,16 @@ export type CoffeeShopLightingProfile = {
   accentIntensity: number
   wood: number
   brass: number
+  floor: number
+  wall: number
+  darkWood: number
+  glass: number
+  doorGlow: number
   shadowMapType: THREE.ShadowMapType
 }
 
-export function getCoffeeShopLightingProfile(): CoffeeShopLightingProfile {
-  return {
+export function getCoffeeShopLightingProfile(theme: SiteTheme = 'night'): CoffeeShopLightingProfile {
+  const night: CoffeeShopLightingProfile = {
     background: 0x080503,
     fogColor: 0x080503,
     fogDensity: .014,
@@ -35,8 +41,33 @@ export function getCoffeeShopLightingProfile(): CoffeeShopLightingProfile {
     accentIntensity: 18,
     wood: 0x35180d,
     brass: 0x8d6030,
+    floor: 0x1a0e08,
+    wall: 0x120a06,
+    darkWood: 0x1b0c07,
+    glass: 0x392116,
+    doorGlow: 0xc56d30,
     shadowMapType: THREE.PCFShadowMap,
   }
+
+  return theme === 'morning' ? {
+    ...night,
+    background: 0xe8dfd1,
+    fogColor: 0xe8dfd1,
+    fogDensity: .009,
+    exposure: 1.12,
+    ambientSky: 0xffe4c0,
+    ambientGround: 0x71675a,
+    ambientIntensity: 3.2,
+    practicalIntensity: 15,
+    accentIntensity: 4,
+    wood: 0x805b3e,
+    brass: 0xac8751,
+    floor: 0x92795d,
+    wall: 0xe2d3be,
+    darkWood: 0x60442f,
+    glass: 0xaaa896,
+    doorGlow: 0xe4a45e,
+  } : night
 }
 
 function normalizeModel(source: THREE.Object3D, targetHeight: number) {
@@ -82,7 +113,7 @@ function box(parent: THREE.Object3D, size: [number, number, number], position: [
   return mesh
 }
 
-export function CoffeeShop3D({ reducedMotion }: Props) {
+export function CoffeeShop3D({ reducedMotion, theme }: Props) {
   const shellRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -91,7 +122,7 @@ export function CoffeeShop3D({ reducedMotion }: Props) {
     const canvas = canvasRef.current
     if (!shell || !canvas || typeof WebGLRenderingContext === 'undefined') return
 
-    const lighting = getCoffeeShopLightingProfile()
+    const lighting = getCoffeeShopLightingProfile(theme)
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(lighting.background)
     scene.fog = new THREE.FogExp2(lighting.fogColor, lighting.fogDensity)
@@ -133,13 +164,13 @@ export function CoffeeShop3D({ reducedMotion }: Props) {
     counterFill.position.set(2, 4.4, 3.2)
     room.add(counterFill)
 
-    const floorMaterial = new THREE.MeshPhysicalMaterial({ color: 0x1a0e08, roughness: .42, metalness: .08, clearcoat: .45, clearcoatRoughness: .25 })
-    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0x120a06, roughness: .88, metalness: .03 })
+    const floorMaterial = new THREE.MeshPhysicalMaterial({ color: lighting.floor, roughness: .42, metalness: .08, clearcoat: .45, clearcoatRoughness: .25 })
+    const wallMaterial = new THREE.MeshStandardMaterial({ color: lighting.wall, roughness: .88, metalness: .03 })
     const woodMaterial = new THREE.MeshStandardMaterial({ color: lighting.wood, roughness: .62, metalness: .05 })
-    const darkWoodMaterial = new THREE.MeshStandardMaterial({ color: 0x1b0c07, roughness: .72 })
+    const darkWoodMaterial = new THREE.MeshStandardMaterial({ color: lighting.darkWood, roughness: .72 })
     const brassMaterial = new THREE.MeshStandardMaterial({ color: lighting.brass, roughness: .32, metalness: .78 })
-    const glassMaterial = new THREE.MeshPhysicalMaterial({ color: 0x392116, roughness: .12, metalness: .2, transmission: .12, transparent: true, opacity: .82 })
-    const doorGlowMaterial = new THREE.MeshBasicMaterial({ color: 0xc56d30, transparent: true, opacity: .46 })
+    const glassMaterial = new THREE.MeshPhysicalMaterial({ color: lighting.glass, roughness: .12, metalness: .2, transmission: .12, transparent: true, opacity: .82 })
+    const doorGlowMaterial = new THREE.MeshBasicMaterial({ color: lighting.doorGlow, transparent: true, opacity: theme === 'morning' ? .22 : .46 })
     const bagMaterial = new THREE.MeshStandardMaterial({ color: 0x8b5a35, roughness: .86, metalness: 0 })
 
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), floorMaterial)
@@ -266,7 +297,7 @@ export function CoffeeShop3D({ reducedMotion }: Props) {
       })
       renderer.dispose()
     }
-  }, [reducedMotion])
+  }, [reducedMotion, theme])
 
   return <div ref={shellRef} className="coffee-shop-3d" data-ready="loading"><canvas ref={canvasRef} role="img" aria-label="Royal 3D coffee shop interior" /></div>
 }

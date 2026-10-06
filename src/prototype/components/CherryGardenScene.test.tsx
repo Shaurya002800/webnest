@@ -3,10 +3,10 @@ import { describe, expect, it } from 'vitest'
 import { CherryGardenScene } from './CherryGardenScene'
 
 describe('cherry blossom business-journey scene', () => {
-  it('uses the clean royal plate and a dedicated slow petal film instead of another WebGL renderer', () => {
+  it('uses the morning plate and a dedicated slow petal film instead of another WebGL renderer', () => {
     const { container } = render(<CherryGardenScene reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /different businesses/i })).toBeInTheDocument()
-    expect(container.querySelector<HTMLImageElement>('.cherry-garden__plate')).toHaveAttribute('src', '/assets/reference/cherry-garden-royal.webp')
+    expect(container.querySelector<HTMLImageElement>('.cherry-garden__plate')).toHaveAttribute('src', '/assets/reference/cherry-garden-morning.webp')
     const film = container.querySelector<HTMLVideoElement>('video[autoplay][loop][playsinline]')
     expect(film).toBeInTheDocument()
     expect(film?.muted).toBe(true)

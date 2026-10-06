@@ -3,9 +3,9 @@ import {
   ArrowDown, ArrowRight, List, X,
 } from '@phosphor-icons/react'
 import { CTA_ROUTES, SCENES } from '../scene-model'
+import { ThemeToggle } from '../SiteTheme'
 import { getMotionPolicy } from '../motion-policy'
 import { ButterflyDirector } from './ButterflyDirector'
-import { LiveFlame } from './LiveFlame'
 import { ExteriorTransition } from './ExteriorTransition'
 import { StreetSystem } from './StreetSystem'
 import { CoffeeShopScene } from './CoffeeShopScene'
@@ -37,8 +37,11 @@ function Header() {
       <nav className={open ? 'site-nav is-open' : 'site-nav'} aria-label="Primary navigation">
         <a href="#services" onClick={() => setOpen(false)}>Services</a><a href="#work" onClick={() => setOpen(false)}>Work</a><a href="#process" onClick={() => setOpen(false)}>Process</a><a href="#pricing" onClick={() => setOpen(false)}>Pricing</a>
       </nav>
-      <a className="header-cta" href={CTA_ROUTES.audit}>Free audit <ArrowRight weight="bold" /></a>
-      <button className="menu-toggle" aria-label="Toggle menu" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X /> : <List />}</button>
+      <div className="site-header__actions">
+        <ThemeToggle />
+        <a className="header-cta" href={CTA_ROUTES.audit}>Free audit <ArrowRight weight="bold" /></a>
+        <button className="menu-toggle" aria-label="Toggle menu" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X /> : <List />}</button>
+      </div>
     </header>
   )
 }
@@ -51,7 +54,7 @@ export function Homepage() {
     <main id="main">
       <ExteriorTransition reducedMotion={motion.tier === 'still'}>
         <div className="hero-content"><p className="eyebrow"><span />{SCENES[0].eyebrow}</p><h1 id="hero-title">Where brands<br /><em>become worlds.</em></h1><p>{SCENES[0].description}</p><div className="hero-actions"><a className="button button--primary" href={CTA_ROUTES.audit}>Get a free audit <ArrowRight weight="bold" /></a><a className="button button--ghost" href={CTA_ROUTES.project}>Start a project</a></div></div>
-        <LiveFlame reducedMotion={motion.tier === 'still'} /><a className="scroll-cue" href="#problems"><span>Follow the light</span><ArrowDown /></a>
+        <a className="scroll-cue" href="#problems"><span>Follow the light</span><ArrowDown /></a>
       </ExteriorTransition>
 
       <StreetSystem reducedMotion={motion.tier === 'still'} />

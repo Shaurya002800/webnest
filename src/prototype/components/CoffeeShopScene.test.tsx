@@ -30,4 +30,12 @@ describe('royal coffee shop scene', () => {
     expect(profile.practicalIntensity).toBeGreaterThan(profile.accentIntensity)
     expect(profile.shadowMapType).toBe(THREE.PCFShadowMap)
   })
+
+  it('uses a daylight interior palette while preserving readable warm materials', () => {
+    const profile = getCoffeeShopLightingProfile('morning')
+    expect(profile.background).toBe(0xe8dfd1)
+    expect(profile.ambientIntensity).toBeGreaterThan(3)
+    expect(profile.wood).toBeGreaterThan(0x35180d)
+    expect(profile.accentIntensity).toBeLessThan(profile.practicalIntensity)
+  })
 })

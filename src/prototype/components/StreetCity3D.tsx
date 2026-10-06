@@ -3,8 +3,9 @@ import * as THREE from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import type { StreetSystemState } from '../street-system'
+import type { SiteTheme } from '../SiteTheme'
 
-type Props = { reducedMotion: boolean }
+type Props = { reducedMotion: boolean; theme: SiteTheme }
 
 const CITY_ASSETS = '/assets/3d/city'
 
@@ -25,12 +26,13 @@ type StreetLightingProfile = {
   windowMaterial: number
   windowEmissive: number
   windowEmissiveIntensity: number
+  buildingTint?: number
   roadColor: number
   roadRoughness: number
 }
 
-export function getStreetLightingProfile(): StreetLightingProfile {
-  return {
+export function getStreetLightingProfile(theme: SiteTheme = 'night'): StreetLightingProfile {
+  const night: StreetLightingProfile = {
     background: 0x050a14,
     fogColor: 0x050a14,
     fogDensity: .009,
@@ -50,6 +52,29 @@ export function getStreetLightingProfile(): StreetLightingProfile {
     roadColor: 0x0d151f,
     roadRoughness: .14,
   }
+
+  return theme === 'morning' ? {
+    ...night,
+    background: 0xb8ced9,
+    fogColor: 0xc3d5db,
+    fogDensity: .005,
+    exposure: 1.08,
+    ambientSky: 0xffedda,
+    ambientGround: 0x666b6b,
+    ambientIntensity: 2.8,
+    moonIntensity: 2.7,
+    washIntensity: 2.4,
+    skylineIntensity: 3,
+    practicalIntensity: 7,
+    accentIntensity: 3,
+    mappedMaterial: 0xd3c7b4,
+    windowMaterial: 0xa4b8bd,
+    windowEmissive: 0x000000,
+    windowEmissiveIntensity: 0,
+    buildingTint: 0xc5b7a2,
+    roadColor: 0x737b7d,
+    roadRoughness: .48,
+  } : night
 }
 
 function normalizedModel(source: THREE.Object3D, targetHeight: number) {
@@ -75,7 +100,7 @@ function applyCityMaterial(root: THREE.Object3D, baseColor: THREE.ColorRepresent
       const source = sourceMaterial as THREE.MeshStandardMaterial
       const isWindow = /glass|window|interior/.test(source.name?.toLowerCase() ?? '')
       return new THREE.MeshStandardMaterial({
-        color: source.map ? lighting.mappedMaterial : isWindow ? lighting.windowMaterial : baseColor,
+        color: source.map ? lighting.mappedMaterial : isWindow ? lighting.windowMaterial : lighting.buildingTint ?? baseColor,
         map: source.map ?? null,
         alphaMap: source.alphaMap ?? null,
         transparent: source.transparent,
@@ -109,7 +134,7 @@ function cloneAt(
   return clone
 }
 
-export function StreetCity3D({ reducedMotion }: Props) {
+export function StreetCity3D({ reducedMotion, theme }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const shellRef = useRef<HTMLDivElement>(null)
 
@@ -117,7 +142,7 @@ export function StreetCity3D({ reducedMotion }: Props) {
     const canvas = canvasRef.current
     const shell = shellRef.current
     if (!canvas || !shell || typeof WebGLRenderingContext === 'undefined') return
-    const lighting = getStreetLightingProfile()
+    const lighting = getStreetLightingProfile(theme)
 
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(lighting.background)
@@ -307,7 +332,7 @@ export function StreetCity3D({ reducedMotion }: Props) {
       })
       renderer.dispose()
     }
-  }, [reducedMotion])
+  }, [reducedMotion, theme])
 
   return (
     <div ref={shellRef} className="street-city-3d" data-ready="loading">

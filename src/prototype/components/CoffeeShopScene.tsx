@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 import { ArrowRight, GearSix, ShieldCheck, Storefront, TrendUp } from '@phosphor-icons/react'
 import { getCoffeeShopState, type CoffeeShopState } from '../coffee-shop'
+import { useSiteTheme } from '../SiteTheme'
 import { ViewportScene } from './ViewportScene'
 
 const CoffeeShop3D = lazy(() => import('./CoffeeShop3D').then((module) => ({ default: module.CoffeeShop3D })))
@@ -17,6 +18,7 @@ const pillars = [
 export function CoffeeShopScene({ reducedMotion }: Props) {
   const ref = useRef<HTMLElement>(null)
   const [activePillar, setActivePillar] = useState(0)
+  const { theme } = useSiteTheme()
 
   useEffect(() => {
     const element = ref.current
@@ -62,7 +64,7 @@ export function CoffeeShopScene({ reducedMotion }: Props) {
     <section ref={ref} className="coffee-shop scene" id="coffee-shop" aria-label="Everything your business needs to grow online" data-testid="coffee-shop" data-phase="threshold" onPointerMove={onPointerMove} onPointerLeave={clearPointer} style={{ '--coffee-active-pillar': activePillar } as CSSProperties}>
       <span id="services" className="scene-anchor" aria-hidden="true" />
       <div className="coffee-shop__sticky">
-        <div className="coffee-shop__camera"><ViewportScene label="coffee-shop"><Suspense fallback={null}><CoffeeShop3D reducedMotion={reducedMotion} /></Suspense></ViewportScene></div>
+        <div className="coffee-shop__camera"><ViewportScene label="coffee-shop"><Suspense fallback={null}><CoffeeShop3D reducedMotion={reducedMotion} theme={theme} /></Suspense></ViewportScene></div>
         <div className="coffee-shop__shade" aria-hidden="true" />
         <div className="coffee-shop__intro">
           <p className="eyebrow"><span />What we build</p>

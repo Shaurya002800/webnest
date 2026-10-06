@@ -4,6 +4,8 @@ import {
   MagnifyingGlass, RocketLaunch, Sparkle, Star, UserFocus, UsersThree,
 } from '@phosphor-icons/react'
 import { CTA_ROUTES } from '../scene-model'
+import { useSiteTheme } from '../SiteTheme'
+import { getScenePlate, type ScenePlateId } from '../scene-themes'
 
 type LateRealm = 'selected-work' | 'process' | 'pricing' | 'audit' | 'faq' | 'final-room'
 
@@ -90,8 +92,9 @@ function usePlatePointer(reducedMotion: boolean) {
   }
 }
 
-function ScenePlate({ src, alt }: { src: string; alt: string }) {
-  return <div className="late-scene__camera" aria-hidden="true"><img src={src} alt={alt} loading="lazy" decoding="async" /></div>
+function ScenePlate({ scene, alt }: { scene: ScenePlateId; alt: string }) {
+  const { theme } = useSiteTheme()
+  return <div className="late-scene__camera" aria-hidden="true"><img src={getScenePlate(scene, theme)} alt={alt} loading="lazy" decoding="async" /></div>
 }
 
 export function SelectedWorkScene({ reducedMotion }: { reducedMotion: boolean }) {
@@ -101,7 +104,7 @@ export function SelectedWorkScene({ reducedMotion }: { reducedMotion: boolean })
   const onPointerMove = usePlatePointer(reducedMotion)
   return (
     <section ref={ref} className="late-scene selected-work-scene scene" id="work" data-testid="selected-work-scene" data-active-project={active} onPointerMove={onPointerMove}>
-      <ScenePlate src="/assets/cinematic/selected-work-bg.jpg" alt="" />
+      <ScenePlate scene="selectedWork" alt="" />
       <div className="late-scene__shade" />
       <div className="selected-work-scene__content">
         <div className="selected-work-scene__intro">
@@ -131,7 +134,7 @@ export function ProcessScene({ reducedMotion }: { reducedMotion: boolean }) {
   useLateScene(ref, 'process', reducedMotion)
   return (
     <section ref={ref} className="late-scene process-scene scene" id="process" data-testid="process-scene" data-active-step={active} onPointerMove={usePlatePointer(reducedMotion)}>
-      <ScenePlate src="/assets/cinematic/process-bg.jpg" alt="" /><div className="late-scene__shade" />
+      <ScenePlate scene="process" alt="" /><div className="late-scene__shade" />
       <div className="process-scene__copy"><p className="eyebrow"><span />How it works</p><h2 aria-label="From business problem to growth system.">From business problem<br />to growth system.</h2><p>A simple process that keeps the focus on your business, your customers and what actually needs to be built.</p><div className="process-scene__flow">Understand → Plan → Build → Launch → Grow</div><a href={CTA_ROUTES.project}>Start your project <ArrowRight /></a></div>
       <div className="process-scene__steps" aria-label="WebNest process">
         {steps.map(({ number, title, copy, Icon }, index) => <button key={title} type="button" aria-label={`${number} ${title}: ${copy}`} aria-pressed={active === index} data-active={active === index} onClick={() => setActive(index)} onFocus={() => setActive(index)} onPointerEnter={() => setActive(index)}><Icon /><span><strong>{number} — {title}</strong><small>{copy}</small></span></button>)}
@@ -145,7 +148,7 @@ export function PricingScene({ reducedMotion }: { reducedMotion: boolean }) {
   useLateScene(ref, 'pricing', reducedMotion)
   return (
     <section ref={ref} className="late-scene pricing-scene scene" id="pricing" data-testid="pricing-scene" onPointerMove={usePlatePointer(reducedMotion)}>
-      <ScenePlate src="/assets/cinematic/pricing-bg.jpg" alt="" /><div className="late-scene__shade" />
+      <ScenePlate scene="pricing" alt="" /><div className="late-scene__shade" />
       <div className="pricing-scene__content"><div className="pricing-scene__intro"><p className="eyebrow"><span />Choose your starting point</p><h2 aria-label="Start with what your business actually needs.">Start with what your<br />business actually needs.</h2><p>Simple starting packages for different stages of growth. Every WebNest solution can be customised around your business.</p></div>
         <div className="pricing-scene__packages">{packages.map((tier, index) => <article key={tier.name} data-featured={tier.featured || undefined}><div><span>0{index + 1} — {tier.name}</span><strong>{tier.price}</strong><p>{tier.copy}</p></div><ul>{tier.items.map(item => <li key={item}><Check />{item}</li>)}</ul><a href={`${CTA_ROUTES.project}?package=${tier.name.toLowerCase()}`}>Choose {tier.name} <ArrowRight /></a></article>)}</div>
         <a className="pricing-scene__custom" href={`${CTA_ROUTES.project}?package=custom`}>Need something different? Get a custom quote <ArrowRight /></a>
@@ -159,7 +162,7 @@ export function AuditScene({ reducedMotion }: { reducedMotion: boolean }) {
   useLateScene(ref, 'audit', reducedMotion)
   return (
     <section ref={ref} className="late-scene audit-scene scene" id="audit" data-testid="audit-scene" onPointerMove={usePlatePointer(reducedMotion)}>
-      <ScenePlate src="/assets/cinematic/audit-bg.jpg" alt="" /><div className="late-scene__shade" />
+      <ScenePlate scene="audit" alt="" /><div className="late-scene__shade" />
       <div className="audit-scene__content"><p className="eyebrow"><span />Start with clarity</p><h2 aria-label="Not sure what your business needs? We'll show you.">Not sure what your<br />business needs? We'll<br />show you.</h2><p>Get a free review of your current online presence and see where customers may be dropping off, what's missing, and what can be improved.</p><h3>What we check</h3><div className="audit-scene__checks">{auditChecks.map(({ title, copy, Icon }, index) => <div key={title}><Icon /><span><strong>0{index + 1} — {title}</strong><small>{copy}</small></span></div>)}</div><a className="button button--primary" href={CTA_ROUTES.audit}><Sparkle />Get my free audit <ArrowRight /></a><small>Free · No obligation · Personalised recommendations</small></div>
     </section>
   )
@@ -171,7 +174,7 @@ export function FaqRoadScene({ reducedMotion }: { reducedMotion: boolean }) {
   useLateScene(ref, 'faq', reducedMotion)
   return (
     <section ref={ref} className="late-scene faq-road-scene scene" id="faq" data-testid="faq-scene" onPointerMove={usePlatePointer(reducedMotion)}>
-      <ScenePlate src="/assets/cinematic/faq-bg.jpg" alt="" /><div className="late-scene__shade" />
+      <ScenePlate scene="faq" alt="" /><div className="late-scene__shade" />
       <div className="faq-road-scene__content"><p className="eyebrow"><span />FAQ · Questions answered</p><h2 aria-label="Before you work with WebNest.">Before you work<br />with WebNest.</h2><p>A few things businesses usually want to know before getting started.</p><div className="faq-road-scene__list">{faqs.map(([question, answer], index) => { const expanded = open === index; return <div key={question}><button type="button" aria-expanded={expanded} onClick={() => setOpen(expanded ? -1 : index)}><span>0{index + 1} — {question}</span><span aria-hidden="true">{expanded ? '−' : '+'}</span></button><div hidden={!expanded}><p>{answer}</p></div></div> })}</div><a href="mailto:hello@webnest.in">Still have a question? Talk to WebNest <ArrowRight /></a></div>
     </section>
   )
@@ -182,7 +185,7 @@ export function FinalRoomScene({ reducedMotion }: { reducedMotion: boolean }) {
   useLateScene(ref, 'final-room', reducedMotion)
   return (
     <section ref={ref} className="late-scene final-room-scene scene" id="final-cta" data-testid="final-cta-scene" onPointerMove={usePlatePointer(reducedMotion)}>
-      <ScenePlate src="/assets/cinematic/final-bg.jpg" alt="" /><div className="late-scene__shade" />
+      <ScenePlate scene="finalRoom" alt="" /><div className="late-scene__shade" />
       <div className="final-room-scene__content"><p className="eyebrow"><span />Ready when you are</p><h2 aria-label="Your next customer may already be looking for you.">Your next customer<br />may already be<br />looking for you.</h2><p>Let's make sure they find the right system—and take the next step without friction.</p><div className="hero-actions"><a className="button button--primary" href={CTA_ROUTES.audit}>Get my free audit <ArrowRight /></a><a className="button button--ghost" href={CTA_ROUTES.project}>Start a project <ArrowRight /></a></div><p className="final-room-scene__services">Websites <span /> Growth <span /> Automation <span /> AI</p><p className="final-room-scene__statement">You've built the business.<br />Now let's build the system around it.</p></div>
     </section>
   )

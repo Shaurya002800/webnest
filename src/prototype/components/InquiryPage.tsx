@@ -1,10 +1,13 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { ArrowLeft, ArrowRight, CheckCircle } from '@phosphor-icons/react'
+import { ThemeToggle, useSiteTheme } from '../SiteTheme'
+import { getScenePlate } from '../scene-themes'
 
 type InquiryKind = 'audit' | 'project'
 
 export function InquiryPage({ kind }: { kind: InquiryKind }) {
   const [submitted, setSubmitted] = useState(false)
+  const { theme } = useSiteTheme()
   const selectedPackage = useMemo(() => {
     const value = new URLSearchParams(window.location.search).get('package')?.toLowerCase()
     return ['starter', 'growth', 'growthos', 'custom'].includes(value || '') ? value : ''
@@ -18,8 +21,9 @@ export function InquiryPage({ kind }: { kind: InquiryKind }) {
 
   return (
     <main className="inquiry-page">
-      <img className="inquiry-page__plate" src="/assets/cinematic/final-bg.jpg" alt="" />
+      <img className="inquiry-page__plate" src={getScenePlate('finalRoom', theme)} alt="" />
       <div className="inquiry-page__shade" />
+      <ThemeToggle className="theme-toggle--inquiry" />
       <a className="inquiry-page__back" href="/"><ArrowLeft />Back to the journey</a>
       <section className="inquiry-page__intro" aria-labelledby="inquiry-title">
         <p className="eyebrow"><span />{isAudit ? 'Free growth audit' : 'Start a project'}</p>

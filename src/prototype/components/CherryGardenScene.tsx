@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 import { ArrowRight, Barbell, FirstAid, FlowerLotus, ForkKnife, GraduationCap, Scissors, ShoppingBag, type Icon } from '@phosphor-icons/react'
 import { getCherryGardenState, type CherryGardenState } from '../cherry-garden'
+import { useSiteTheme } from '../SiteTheme'
+import { getScenePlate } from '../scene-themes'
 
 type Props = { reducedMotion: boolean }
 
@@ -15,6 +17,7 @@ const journeys: Array<{ number: string; title: string; items: string[]; Icon: Ic
 
 export function CherryGardenScene({ reducedMotion }: Props) {
   const ref = useRef<HTMLElement>(null)
+  const { theme } = useSiteTheme()
   const filmRef = useRef<HTMLVideoElement>(null)
   const [activeJourney, setActiveJourney] = useState(0)
   const [filmEnabled, setFilmEnabled] = useState(false)
@@ -96,7 +99,7 @@ export function CherryGardenScene({ reducedMotion }: Props) {
     <section ref={ref} className="cherry-garden cherry-garden--media scene" id="industries" aria-labelledby="cherry-title" data-testid="cherry-garden" data-phase="doorway" onPointerMove={onPointerMove} onPointerLeave={clearPointer} style={{ '--cherry-active-journey': activeJourney } as CSSProperties}>
       <div className="cherry-garden__sticky">
         <div className="cherry-garden__camera" aria-hidden="true">
-          <img className="cherry-garden__plate" src="/assets/reference/cherry-garden-royal.webp" alt="" loading="lazy" decoding="async" />
+          <img className="cherry-garden__plate" src={getScenePlate('cherryGarden', theme)} alt="" loading="lazy" decoding="async" />
           <video ref={filmRef} className="cherry-garden__film" src={filmEnabled ? '/assets/generated/cherry-petal-slow.mp4' : undefined} autoPlay loop muted playsInline preload="none" data-motion="slow-petals" data-ready="loading" onCanPlay={(event) => { event.currentTarget.dataset.ready = 'true' }} />
         </div>
         <div className="cherry-garden__shade" aria-hidden="true" />
