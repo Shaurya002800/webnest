@@ -154,8 +154,7 @@ The earlier Figma guidance recommended Next.js, GSAP, Lenis, Rive, Zustand, and 
 
 ### Installed but not currently central
 
-- `gsap` is installed but no current `src/` module imports it.
-- `@dgreenheck/ez-tree` remains installed from the earlier live cherry-tree implementation but is not used by the active cherry scene.
+- `@dgreenheck/ez-tree` is used by the sakura-tree regeneration utility and its tests; the active cherry scene loads the generated GLB.
 
 ### Not implemented
 
