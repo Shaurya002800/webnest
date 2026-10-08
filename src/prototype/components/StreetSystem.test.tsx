@@ -36,6 +36,7 @@ describe('interactive street system', () => {
     render(<StreetSystem reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /connected online business system/i })).toBeInTheDocument()
     expect(await screen.findByRole('img', { name: /interactive 3d new york-inspired street/i })).toBeInTheDocument()
+    expect(document.querySelector('.street-system__arrival-plate')?.getAttribute('src')).toBe('/assets/reference/street-arrival-morning.jpg')
     expect(document.querySelector('img[src="/assets/generated/street-system-nyc.png"]')).not.toBeInTheDocument()
     expect(screen.getAllByRole('button')).toHaveLength(6)
     expect(screen.getByRole('link', { name: /explore what webnest builds/i })).toHaveAttribute('href', '#services')

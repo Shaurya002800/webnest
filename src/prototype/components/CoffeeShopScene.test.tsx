@@ -9,7 +9,7 @@ describe('royal coffee shop scene', () => {
     render(<CoffeeShopScene reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /everything your business needs/i })).toBeInTheDocument()
     expect(await screen.findByRole('img', { name: /royal 3d coffee shop interior/i })).toBeInTheDocument()
-    expect(document.querySelector('img[src*="coffee-shop"]')).not.toBeInTheDocument()
+    expect(document.querySelector('.coffee-shop__entry-plate')).toHaveAttribute('src', '/assets/reference/coffee-shop-entry-morning.jpg')
     expect(screen.getAllByRole('button')).toHaveLength(4)
     expect(screen.getByRole('link', { name: /explore all services/i })).toHaveAttribute('href', '#services')
   })

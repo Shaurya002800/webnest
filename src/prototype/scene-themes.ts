@@ -14,7 +14,7 @@ export const SCENE_PLATES = {
     night: '/assets/reference/cherry-garden-royal.webp',
   },
   apartment: {
-    morning: '/assets/reference/apartment-facade-morning.webp',
+    morning: '/assets/reference/apartment-facade-morning.jpg',
     night: '/assets/reference/apartment-facade-royal.webp',
   },
   selectedWork: {
@@ -26,7 +26,7 @@ export const SCENE_PLATES = {
     night: '/assets/cinematic/process-bg.jpg',
   },
   pricing: {
-    morning: '/assets/cinematic/pricing-morning.webp',
+    morning: '/assets/reference/pricing-stairs-morning.jpg',
     night: '/assets/cinematic/pricing-bg.jpg',
   },
   audit: {

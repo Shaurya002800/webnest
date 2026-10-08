@@ -37,6 +37,7 @@ export function StreetSystem({ reducedMotion }: Props) {
       element.style.setProperty('--street-camera-x', `${state.camera.x}%`)
       element.style.setProperty('--street-camera-y', `${state.camera.y}%`)
       element.style.setProperty('--street-camera-tilt', `${state.camera.tilt}deg`)
+      element.style.setProperty('--street-arrival-opacity', String(Math.max(0, Math.min(1, 1 - state.routeProgress / .47))))
       setActiveStep(state.activeStep)
       if (announce) window.dispatchEvent(new CustomEvent('webnest:street-progress', { detail: state }))
     }
@@ -91,6 +92,7 @@ export function StreetSystem({ reducedMotion }: Props) {
     >
       <div className="street-system__sticky">
         <div className="street-system__camera">
+          {theme === 'morning' ? <img className="street-system__arrival-plate" src="/assets/reference/street-arrival-morning.jpg" alt="" aria-hidden="true" /> : null}
           <ViewportScene label="street-city"><Suspense fallback={null}><StreetCity3D reducedMotion={reducedMotion} theme={theme} /></Suspense></ViewportScene>
         </div>
         <img className="street-system__route" src="/assets/generated/street-route.png" alt="" aria-hidden="true" />

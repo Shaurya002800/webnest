@@ -28,6 +28,7 @@ export function CoffeeShopScene({ reducedMotion }: Props) {
       element.dataset.phase = state.phase
       element.style.setProperty('--coffee-progress', String(state.progress))
       element.style.setProperty('--coffee-content-opacity', String(state.contentOpacity))
+      element.style.setProperty('--coffee-entry-opacity', String(Math.max(0, Math.min(1, 1 - state.progress / .16))))
       setActivePillar(state.activePillar)
       if (announce) window.dispatchEvent(new CustomEvent('webnest:coffee-progress', { detail: state }))
     }
@@ -64,7 +65,10 @@ export function CoffeeShopScene({ reducedMotion }: Props) {
     <section ref={ref} className="coffee-shop scene" id="coffee-shop" aria-label="Everything your business needs to grow online" data-testid="coffee-shop" data-phase="threshold" onPointerMove={onPointerMove} onPointerLeave={clearPointer} style={{ '--coffee-active-pillar': activePillar } as CSSProperties}>
       <span id="services" className="scene-anchor" aria-hidden="true" />
       <div className="coffee-shop__sticky">
-        <div className="coffee-shop__camera"><ViewportScene label="coffee-shop"><Suspense fallback={null}><CoffeeShop3D reducedMotion={reducedMotion} theme={theme} /></Suspense></ViewportScene></div>
+        <div className="coffee-shop__camera">
+          {theme === 'morning' ? <img className="coffee-shop__entry-plate" src="/assets/reference/coffee-shop-entry-morning.jpg" alt="" aria-hidden="true" /> : null}
+          <ViewportScene label="coffee-shop"><Suspense fallback={null}><CoffeeShop3D reducedMotion={reducedMotion} theme={theme} /></Suspense></ViewportScene>
+        </div>
         <div className="coffee-shop__shade" aria-hidden="true" />
         <div className="coffee-shop__intro">
           <p className="eyebrow"><span />What we build</p>
