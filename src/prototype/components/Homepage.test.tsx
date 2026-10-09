@@ -20,7 +20,7 @@ describe('homepage conversion and FAQ', () => {
   it('uses a morning exterior building plate by default', () => {
     render(<Homepage />)
     expect(screen.getByTestId('hero-exterior-journey')).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /sunlit city building in the morning/i })).toHaveAttribute('src', '/assets/generated/building-morning.webp')
+    expect(screen.getByRole('img', { name: /sunlit city building in the morning/i })).toHaveAttribute('src', '/assets/morning/frame2.png')
   })
 
   it('uses one continuous morning hero journey instead of repeating the room in a second section', () => {
@@ -28,7 +28,7 @@ describe('homepage conversion and FAQ', () => {
     const journey = screen.getByTestId('hero-exterior-journey')
     expect(journey).toContainElement(screen.getByRole('heading', { level: 1, name: /where brands/i }))
     expect(journey).toContainElement(screen.getByRole('img', { name: /sunlit city building in the morning/i }))
-    expect(journey.querySelectorAll('img[src="/assets/generated/hero-room-morning.png"]')).toHaveLength(1)
+    expect(journey.querySelectorAll('img[src="/assets/morning/frame1.png"]')).toHaveLength(1)
     expect(journey.querySelector('.exterior-flame-camera')).not.toBeInTheDocument()
     expect(screen.queryByTestId('live-flame')).not.toBeInTheDocument()
   })
@@ -65,7 +65,7 @@ describe('homepage conversion and FAQ', () => {
     const cherry = screen.getByTestId('cherry-garden')
     const apartment = screen.getByTestId('apartment-facade')
     expect(screen.getByRole('region', { name: /more than a website agency/i })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /cinematic apartment façade in morning light/i })).toHaveAttribute('src', '/assets/reference/apartment-facade-morning.webp')
+    expect(screen.getByRole('img', { name: /cinematic apartment façade in morning light/i })).toHaveAttribute('src', '/assets/morning/frame6.png')
     expect(apartment.querySelector('canvas')).not.toBeInTheDocument()
     expect(cherry.compareDocumentPosition(apartment) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(container.querySelector('.window-grid')).not.toBeInTheDocument()

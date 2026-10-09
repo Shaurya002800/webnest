@@ -4,10 +4,10 @@
 
 - Source visual truth: `/Users/shaurya/Desktop/webnest/public/assets/reference/cherry-garden-figma.png` (captured from the approved Figma frame supplied by the user).
 - Original user screenshot: `/var/folders/_7/4x2mbnx915b3zyjhbllgcslm0000gn/T/TemporaryItems/NSIRD_screencaptureui_bVJDZ8/Screenshot 2026-09-02 at 1.06.56 PM.png`.
-- Browser-rendered implementation: `/Users/shaurya/Desktop/webnest/cherry-garden-browser-final-1672.png`.
-- Mobile evidence: `/Users/shaurya/Desktop/webnest/cherry-garden-browser-mobile.png`.
-- Full-view comparison: `/Users/shaurya/Desktop/webnest/cherry-garden-design-qa-comparison.png`.
-- Focused tree/card comparison: `/Users/shaurya/Desktop/webnest/cherry-garden-design-qa-detail.png`.
+- Browser-rendered implementation: `qa/screenshots/cherry-garden-browser-final-1672.png`.
+- Mobile evidence: `qa/screenshots/cherry-garden-browser-mobile.png`.
+- Full-view comparison: `qa/screenshots/cherry-garden-design-qa-comparison.png`.
+- Focused tree/card comparison: `qa/screenshots/cherry-garden-design-qa-detail.png`.
 - Local implementation URL: `http://127.0.0.1:5177/#business-solutions`.
 
 **Normalization and state**
@@ -42,7 +42,7 @@
    - Fixes: increased blossom density, strengthened the leftward branch force, and added an off-screen-rooted lateral crown that shares the generated geometry. Increased pink canopy lighting and shifted the façade right to recover the source's alley/storefront balance.
 
 3. Final comparison — passed.
-   - Post-fix evidence: `cherry-garden-design-qa-comparison.png` and `cherry-garden-design-qa-detail.png` show the restored dense canopy, heavy right-side trunk and lateral branch, matching six-plaque hierarchy, and compact lower CTA bar.
+   - Post-fix evidence: `qa/screenshots/cherry-garden-design-qa-comparison.png` and `qa/screenshots/cherry-garden-design-qa-detail.png` show the restored dense canopy, heavy right-side trunk and lateral branch, matching six-plaque hierarchy, and compact lower CTA bar.
    - The persistent WebNest navigation and the exact storefront/street geometry remain intentional product-level differences: the header preserves continuity with the already-approved connected journey, while the background is a performant original real-time 3D interpretation rather than a copied raster plate.
 
 **Primary checks**
@@ -121,7 +121,7 @@ final result: passed
 
 **Focused QA — Cherry and apartment performance remediation**
 
-- Browser evidence: `/Users/shaurya/Desktop/webnest/cherry-garden-browser-optimized.png` and `/Users/shaurya/Desktop/webnest/apartment-facade-browser-optimized.png` at the Codex preview viewport (849 × 837 CSS px).
+- Browser evidence: `qa/screenshots/cherry-garden-browser-optimized.png` and `qa/screenshots/apartment-facade-browser-optimized.png` at the Codex preview viewport (849 × 837 CSS px).
 - The cherry tree is now a 1.53 MiB baked GLB generated from the same MIT-licensed EZ Tree system. The previous 3,999.29 kB runtime generator chunk is absent from the production build.
 - Cherry live detail remains interactive through 420 instanced blossoms and up to 80 falling-petal instances. Apartment furniture, room lighting, blinds and butterfly choreography remain live.
 - Both scenes cap renderer density at 1.1×, disable costly shadow maps, and render at approximately 25 fps while onscreen. Browser inspection confirmed one active WebGL canvas, `data-ready="true"`, and no blank handoff in either scene.
@@ -136,9 +136,9 @@ final result: passed
 **Comparison target**
 
 - Source visual truth: `/Users/shaurya/Desktop/webnest/public/assets/reference/apartment-why-webnest.png`.
-- Browser implementation: `/Users/shaurya/Desktop/webnest/apartment-facade-browser-1472.png`.
-- Mobile evidence: `/Users/shaurya/Desktop/webnest/apartment-facade-browser-mobile.png`.
-- Full-view comparison: `/Users/shaurya/Desktop/webnest/apartment-facade-design-qa-comparison.png`.
+- Browser implementation: `qa/apartment-facade-implementation.png`.
+- Mobile evidence: `qa/screenshots/apartment-facade-browser-mobile.png`.
+- Full-view comparison: `qa/screenshots/apartment-facade-design-qa-comparison.png`.
 - Local implementation: `http://127.0.0.1:5180/#why-webnest`.
 
 **Normalization and state**
@@ -164,7 +164,7 @@ final result: passed
    - [P2] The camera crop made the building oversized and lost the source's full-façade framing.
    - Fixes: reduced blind density and opacity, exposed and relit the real props, brightened concrete courses, and pulled the camera back to restore the complete building composition.
 2. Final comparison — passed.
-   - Post-fix evidence: `apartment-facade-design-qa-comparison.png` shows matching content hierarchy, room placement, nocturnal lighting and full-façade scale.
+   - Post-fix evidence: `qa/screenshots/apartment-facade-design-qa-comparison.png` shows matching content hierarchy, room placement, nocturnal lighting and full-façade scale.
 
 **Performance verification**
 

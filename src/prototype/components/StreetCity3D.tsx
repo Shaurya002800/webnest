@@ -163,7 +163,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
     scene.add(city)
 
     scene.add(new THREE.HemisphereLight(lighting.ambientSky, lighting.ambientGround, lighting.ambientIntensity))
-    const moon = new THREE.DirectionalLight(0xb2c9e4, lighting.moonIntensity)
+    const moon = new THREE.DirectionalLight(theme === 'morning' ? 0xfff2d6 : 0xb2c9e4, lighting.moonIntensity)
     moon.position.set(-14, 25, 10)
     scene.add(moon)
 
@@ -172,7 +172,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
     ] as const
     practicals.forEach(([x, y, z], index) => {
       const light = new THREE.PointLight(
-        index === 3 ? 0xc44d82 : 0xf0b878,
+        index === 3 ? (theme === 'morning' ? 0xd47596 : 0xc44d82) : (theme === 'morning' ? 0xffd7a3 : 0xf0b878),
         index === 3 ? lighting.accentIntensity : lighting.practicalIntensity,
         23,
         2.05,
@@ -181,10 +181,10 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
       city.add(light)
     })
 
-    const streetWash = new THREE.DirectionalLight(0x6484a8, lighting.washIntensity)
+    const streetWash = new THREE.DirectionalLight(theme === 'morning' ? 0xffdfc4 : 0x6484a8, lighting.washIntensity)
     streetWash.position.set(18, 12, 12)
     city.add(streetWash)
-    const skylineGlow = new THREE.PointLight(0x47789f, lighting.skylineIntensity, 82, 2.05)
+    const skylineGlow = new THREE.PointLight(theme === 'morning' ? 0xffd19c : 0x47789f, lighting.skylineIntensity, 82, 2.05)
     skylineGlow.position.set(0, 21, -52)
     city.add(skylineGlow)
 

@@ -6,7 +6,7 @@ describe('interactive apartment façade scene', () => {
   it('uses the morning façade still without creating a WebGL surface', () => {
     const { container } = render(<ApartmentFacadeScene reducedMotion={false} />)
     expect(screen.getByRole('region', { name: /more than a website agency/i })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /cinematic apartment façade in morning light/i })).toHaveAttribute('src', '/assets/reference/apartment-facade-morning.jpg')
+    expect(screen.getByRole('img', { name: /cinematic apartment façade in morning light/i })).toHaveAttribute('src', '/assets/morning/frame6.png')
     expect(container.querySelector('canvas')).not.toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 2, name: /more than a website agency/i })).toBeInTheDocument()
     expect(screen.getAllByRole('button')).toHaveLength(4)

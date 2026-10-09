@@ -12,7 +12,7 @@ describe('conversion routes', () => {
   it('defaults to morning and restores the night plates when toggled', () => {
     render(<App />)
     expect(document.documentElement).toHaveAttribute('data-theme', 'morning')
-    expect(screen.getByRole('img', { name: /sunlit city building in the morning/i })).toHaveAttribute('src', '/assets/generated/building-morning.webp')
+    expect(screen.getByRole('img', { name: /sunlit city building in the morning/i })).toHaveAttribute('src', '/assets/morning/frame2.png')
 
     fireEvent.click(screen.getByRole('button', { name: /switch to night theme/i }))
 

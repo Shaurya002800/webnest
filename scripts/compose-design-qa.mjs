@@ -9,7 +9,7 @@ const label = (text, x) => ({
 })
 
 const reference = await sharp('public/assets/reference/street-system-figma.png').resize(width, height).toBuffer()
-const implementation = await sharp('street-implementation-desktop.png').resize(width, height).toBuffer()
+const implementation = await sharp('qa/screenshots/street-implementation-desktop.png').resize(width, height).toBuffer()
 
 await sharp({ create: { width: width * 2, height: height + 52, channels: 3, background: '#050608' } })
   .composite([
@@ -19,4 +19,4 @@ await sharp({ create: { width: width * 2, height: height + 52, channels: 3, back
     { input: implementation, left: width, top: 52 },
   ])
   .png()
-  .toFile('street-design-qa-comparison.png')
+  .toFile('qa/screenshots/street-design-qa-comparison.png')

@@ -141,7 +141,7 @@ export function CoffeeShop3D({ reducedMotion, theme }: Props) {
     const room = new THREE.Group()
     scene.add(room)
     scene.add(new THREE.HemisphereLight(lighting.ambientSky, lighting.ambientGround, lighting.ambientIntensity))
-    const key = new THREE.DirectionalLight(0xd6a36e, 2.6)
+    const key = new THREE.DirectionalLight(theme === 'morning' ? 0xfff0d6 : 0xd6a36e, theme === 'morning' ? 3.2 : 2.6)
     key.position.set(-8, 11, 8)
     room.add(key)
     ;[
@@ -149,18 +149,18 @@ export function CoffeeShop3D({ reducedMotion, theme }: Props) {
       [1.8, 7, -3.5, lighting.practicalIntensity],
       [8.8, 5.2, -6.8, lighting.practicalIntensity * .88],
     ].forEach(([x, y, z, intensity]) => {
-      const light = new THREE.PointLight(0xffa85c, intensity, 15, 2.1)
+      const light = new THREE.PointLight(theme === 'morning' ? 0xffe2b8 : 0xffa85c, intensity, 15, 2.1)
       light.position.set(x, y, z)
       light.castShadow = renderer.shadowMap.enabled
       room.add(light)
     })
-    const ember = new THREE.PointLight(0xd84125, lighting.accentIntensity, 9, 2)
+    const ember = new THREE.PointLight(theme === 'morning' ? 0xe8975d : 0xd84125, lighting.accentIntensity, 9, 2)
     ember.position.set(7.3, 2.5, -2.2)
     room.add(ember)
-    const loungeFill = new THREE.PointLight(0xf5a05b, 34, 14, 2.15)
+    const loungeFill = new THREE.PointLight(theme === 'morning' ? 0xffe9d6 : 0xf5a05b, theme === 'morning' ? 24 : 34, 14, 2.15)
     loungeFill.position.set(-7.8, 4.6, 4.2)
     room.add(loungeFill)
-    const counterFill = new THREE.PointLight(0xe9b079, 28, 13, 2.1)
+    const counterFill = new THREE.PointLight(theme === 'morning' ? 0xfff2e3 : 0xe9b079, theme === 'morning' ? 20 : 28, 13, 2.1)
     counterFill.position.set(2, 4.4, 3.2)
     room.add(counterFill)
 

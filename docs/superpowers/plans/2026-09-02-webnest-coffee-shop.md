@@ -168,8 +168,8 @@ Run: `npm test`
 
 **Files:**
 - Modify: `design-qa.md`
-- Create: `coffee-shop-implementation-desktop.png`
-- Create: `coffee-shop-design-qa-comparison.png`
+- Create: `qa/screenshots/coffee-shop-implementation-desktop.png`
+- Create: `qa/screenshots/coffee-shop-design-qa-comparison.png`
 
 **Interfaces:**
 - Consumes: Figma node `22:21` at 1672 × 941 and the local implementation at the same viewport.
