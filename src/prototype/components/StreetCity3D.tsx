@@ -110,6 +110,7 @@ function applyCityMaterial(root: THREE.Object3D, baseColor: THREE.ColorRepresent
         metalness: isWindow ? .42 : .1,
         emissive: isWindow ? lighting.windowEmissive : 0x000000,
         emissiveIntensity: isWindow ? lighting.windowEmissiveIntensity : 0,
+        userData: { streetWindow: isWindow, streetBaseColor: baseColor },
       })
     })
 
@@ -137,6 +138,8 @@ function cloneAt(
 export function StreetCity3D({ reducedMotion, theme }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const shellRef = useRef<HTMLDivElement>(null)
+  const themeRef = useRef(theme)
+  themeRef.current = theme
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -162,7 +165,8 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
     const city = new THREE.Group()
     scene.add(city)
 
-    scene.add(new THREE.HemisphereLight(lighting.ambientSky, lighting.ambientGround, lighting.ambientIntensity))
+    const hemisphere = new THREE.HemisphereLight(lighting.ambientSky, lighting.ambientGround, lighting.ambientIntensity)
+    scene.add(hemisphere)
     const moon = new THREE.DirectionalLight(theme === 'morning' ? 0xfff2d6 : 0xb2c9e4, lighting.moonIntensity)
     moon.position.set(-14, 25, 10)
     scene.add(moon)
@@ -170,6 +174,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
     const practicals = [
       [-7, 4.2, 0], [7, 4.2, -9], [-7, 4.2, -21], [7, 4.2, -34], [-7, 4.2, -47],
     ] as const
+    const practicalLights: THREE.PointLight[] = []
     practicals.forEach(([x, y, z], index) => {
       const light = new THREE.PointLight(
         index === 3 ? (theme === 'morning' ? 0xd47596 : 0xc44d82) : (theme === 'morning' ? 0xffd7a3 : 0xf0b878),
@@ -179,6 +184,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
       )
       light.position.set(x, y, z)
       city.add(light)
+      practicalLights.push(light)
     })
 
     const streetWash = new THREE.DirectionalLight(theme === 'morning' ? 0xffdfc4 : 0x6484a8, lighting.washIntensity)
@@ -188,9 +194,10 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
     skylineGlow.position.set(0, 21, -52)
     city.add(skylineGlow)
 
+    const wetRoadMaterial = new THREE.MeshPhysicalMaterial({ color: lighting.roadColor, roughness: lighting.roadRoughness, metalness: .2, clearcoat: 1, clearcoatRoughness: .08 })
     const wetRoad = new THREE.Mesh(
       new THREE.PlaneGeometry(13.5, 115),
-      new THREE.MeshPhysicalMaterial({ color: lighting.roadColor, roughness: lighting.roadRoughness, metalness: .2, clearcoat: 1, clearcoatRoughness: .08 }),
+      wetRoadMaterial,
     )
     wetRoad.rotation.x = -Math.PI / 2
     wetRoad.position.set(0, -.05, -40)
@@ -262,6 +269,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
         cloneAt(trafficLight, city, [6.7, .15, -15], -Math.PI / 2)
         cloneAt(trafficLight, city, [-6.7, .15, -39], Math.PI / 2)
         cloneAt(streetSign, city, [-6.6, .12, -14.2], Math.PI / 2)
+        if (themeRef.current !== appliedTheme) syncTheme(themeRef.current)
         shell.dataset.ready = 'true'
       }).catch(() => {
         shell.dataset.ready = 'fallback'
@@ -278,6 +286,43 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
 
     let targetProgress = reducedMotion ? .48 : 0
     let renderedProgress = targetProgress
+    let appliedTheme = theme
+    const syncTheme = (nextTheme: SiteTheme) => {
+      const next = getStreetLightingProfile(nextTheme)
+      scene.background = new THREE.Color(next.background)
+      if (scene.fog instanceof THREE.FogExp2) {
+        scene.fog.color.set(next.fogColor)
+        scene.fog.density = next.fogDensity
+      }
+      renderer.toneMappingExposure = next.exposure
+      hemisphere.color.set(next.ambientSky)
+      hemisphere.groundColor.set(next.ambientGround)
+      hemisphere.intensity = next.ambientIntensity
+      moon.color.set(nextTheme === 'morning' ? 0xfff2d6 : 0xb2c9e4)
+      moon.intensity = next.moonIntensity
+      practicalLights.forEach((light, index) => {
+        light.color.set(index === 3 ? (nextTheme === 'morning' ? 0xd47596 : 0xc44d82) : (nextTheme === 'morning' ? 0xffd7a3 : 0xf0b878))
+        light.intensity = index === 3 ? next.accentIntensity : next.practicalIntensity
+      })
+      streetWash.color.set(nextTheme === 'morning' ? 0xffdfc4 : 0x6484a8)
+      streetWash.intensity = next.washIntensity
+      skylineGlow.color.set(nextTheme === 'morning' ? 0xffd19c : 0x47789f)
+      skylineGlow.intensity = next.skylineIntensity
+      wetRoadMaterial.color.set(next.roadColor)
+      wetRoadMaterial.roughness = next.roadRoughness
+      city.traverse((object) => {
+        if (!(object instanceof THREE.Mesh)) return
+        const materials = Array.isArray(object.material) ? object.material : [object.material]
+        materials.forEach((material) => {
+          if (!(material instanceof THREE.MeshStandardMaterial)) return
+          const isWindow = material.userData.streetWindow === true
+          material.color.set(material.map ? next.mappedMaterial : isWindow ? next.windowMaterial : nextTheme === 'morning' ? next.buildingTint ?? material.userData.streetBaseColor : material.userData.streetBaseColor)
+          material.emissive.set(isWindow ? next.windowEmissive : 0x000000)
+          material.emissiveIntensity = isWindow ? next.windowEmissiveIntensity : 0
+        })
+      })
+      appliedTheme = nextTheme
+    }
     const onProgress = (event: Event) => {
       const state = (event as CustomEvent<StreetSystemState>).detail
       targetProgress = reducedMotion ? .48 : state.routeProgress
@@ -287,7 +332,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
     const resize = () => {
       const width = Math.max(shell.clientWidth, 1)
       const height = Math.max(shell.clientHeight, 1)
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, matchMedia('(max-width: 700px)').matches ? 1 : 1.5))
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, matchMedia('(max-width: 700px)').matches ? 1 : 1.2))
       renderer.setSize(width, height, false)
       camera.aspect = width / height
       camera.updateProjectionMatrix()
@@ -304,6 +349,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
         return
       }
       lastRender = now
+      if (themeRef.current !== appliedTheme) syncTheme(themeRef.current)
       renderedProgress += (targetProgress - renderedProgress) * (reducedMotion ? 1 : .055)
       const forward = renderedProgress * 14
       camera.position.set(
@@ -332,7 +378,7 @@ export function StreetCity3D({ reducedMotion, theme }: Props) {
       })
       renderer.dispose()
     }
-  }, [reducedMotion, theme])
+  }, [reducedMotion])
 
   return (
     <div ref={shellRef} className="street-city-3d" data-ready="loading">

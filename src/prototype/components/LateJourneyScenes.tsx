@@ -48,12 +48,12 @@ const faqs = [
 ]
 
 const butterflyRoutes: Record<LateRealm, { from: [number, number]; to: [number, number]; endOpacity?: number }> = {
-  'selected-work': { from: [86, 22], to: [69, 31] },
-  process: { from: [69, 31], to: [57, 58] },
-  pricing: { from: [57, 58], to: [77, 42] },
-  audit: { from: [77, 42], to: [84, 66] },
-  faq: { from: [84, 66], to: [63, 44] },
-  'final-room': { from: [63, 44], to: [73, 58], endOpacity: 0 },
+  'selected-work': { from: [86, 22], to: [34, 34] },
+  process: { from: [34, 34], to: [76, 60] },
+  pricing: { from: [76, 60], to: [27, 40] },
+  audit: { from: [27, 40], to: [82, 67] },
+  faq: { from: [82, 67], to: [36, 42] },
+  'final-room': { from: [36, 42], to: [74, 58], endOpacity: 0 },
 }
 
 function useLateScene(ref: RefObject<HTMLElement | null>, realm: LateRealm, reducedMotion: boolean) {

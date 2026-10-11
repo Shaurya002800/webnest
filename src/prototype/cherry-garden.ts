@@ -82,18 +82,18 @@ export function getCherryGardenState(rawProgress: number): CherryGardenState {
     butterfly: {
       x: interpolate(progress, [
         { progress: 0, value: 94 },
-        { progress: .14, value: 88 },
-        { progress: .34, value: 76 },
-        { progress: .56, value: 67 },
-        { progress: .76, value: 70 },
+        { progress: .14, value: 40 },
+        { progress: .34, value: 77 },
+        { progress: .56, value: 44 },
+        { progress: .76, value: 80 },
         { progress: 1, value: 92 },
       ]),
       y: interpolate(progress, [
         { progress: 0, value: 23 },
-        { progress: .18, value: 27 },
-        { progress: .4, value: 34 },
-        { progress: .56, value: 31 },
-        { progress: .78, value: 27 },
+        { progress: .18, value: 36 },
+        { progress: .4, value: 24 },
+        { progress: .56, value: 35 },
+        { progress: .78, value: 25 },
         { progress: 1, value: 21 },
       ]),
       scale: interpolate(progress, [

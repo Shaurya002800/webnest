@@ -54,6 +54,7 @@ export function SiteLoader({ pathname }) {
   const { theme } = useSiteTheme()
   const isInquiryPage = pathname === '/free-audit' || pathname === '/start-project'
   const imageSources = (isInquiryPage ? INQUIRY_IMAGES : HOME_IMAGES)[theme]
+  const initialImageSources = useRef(imageSources).current
   const backdrop = getScenePlate(isInquiryPage ? 'finalRoom' : 'heroRoom', theme)
   const [progress, setProgress] = useState(0)
   const [displayProgress, setDisplayProgress] = useState(0)
@@ -123,7 +124,7 @@ export function SiteLoader({ pathname }) {
     })
 
     const tasks = [
-      ...imageSources.map(preloadImage),
+      ...initialImageSources.map(preloadImage),
       Promise.all(OPENING_FONTS.map(preloadFont)),
     ]
     let completed = 0
@@ -172,7 +173,7 @@ export function SiteLoader({ pathname }) {
       window.clearTimeout(timeoutId)
       document.documentElement.classList.remove('site-is-loading')
     }
-  }, [imageSources])
+  }, [])
 
   if (!visible) return null
 

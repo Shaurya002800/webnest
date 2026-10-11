@@ -78,10 +78,10 @@ export function getApartmentFacadeState(rawProgress: number): ApartmentFacadeSta
     butterfly: {
       x: interpolate(progress, [
         { progress: 0, value: 92 },
-        { progress: .18, value: 63 },
-        { progress: .38, value: 55 },
-        { progress: .56, value: 52 },
-        { progress: .74, value: 59 },
+        { progress: .18, value: 36 },
+        { progress: .38, value: 65 },
+        { progress: .56, value: 44 },
+        { progress: .74, value: 75 },
         { progress: 1, value: 86 },
       ]),
       y: interpolate(progress, [

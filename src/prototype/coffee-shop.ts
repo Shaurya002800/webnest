@@ -71,18 +71,18 @@ export function getCoffeeShopState(rawProgress: number): CoffeeShopState {
     },
     butterfly: {
       x: interpolate(progress, [
-        { progress: 0, value: 81 },
-        { progress: .18, value: 74 },
-        { progress: .5, value: 79 },
-        { progress: .78, value: 83 },
-        { progress: 1, value: 94 },
+        { progress: 0, value: 58 },
+        { progress: .18, value: 31 },
+        { progress: .5, value: 62 },
+        { progress: .78, value: 34 },
+        { progress: 1, value: 91 },
       ]),
       y: interpolate(progress, [
         { progress: 0, value: 31 },
-        { progress: .18, value: 42 },
-        { progress: .5, value: 49 },
-        { progress: .78, value: 43 },
-        { progress: 1, value: 23 },
+        { progress: .18, value: 47 },
+        { progress: .5, value: 48 },
+        { progress: .78, value: 28 },
+        { progress: 1, value: 20 },
       ]),
       scale: interpolate(progress, [
         { progress: 0, value: .24 },

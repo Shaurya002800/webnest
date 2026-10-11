@@ -66,7 +66,7 @@ export function CoffeeShopScene({ reducedMotion }: Props) {
       <span id="services" className="scene-anchor" aria-hidden="true" />
       <div className="coffee-shop__sticky">
         <div className="coffee-shop__camera">
-          {theme === 'morning' ? <img className="coffee-shop__entry-plate" src="/assets/reference/coffee-shop-entry-morning.jpg" alt="" aria-hidden="true" /> : null}
+          <img className="coffee-shop__entry-plate" src="/assets/reference/street-arrival-morning.jpg" alt="" aria-hidden="true" />
           <ViewportScene label="coffee-shop"><Suspense fallback={null}><CoffeeShop3D reducedMotion={reducedMotion} theme={theme} /></Suspense></ViewportScene>
         </div>
         <div className="coffee-shop__shade" aria-hidden="true" />

@@ -30,7 +30,12 @@ export function SiteThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [theme])
 
-  const toggleTheme = () => setTheme((current) => current === 'morning' ? 'night' : 'morning')
+  const toggleTheme = () => {
+    const root = document.documentElement
+    root.dataset.themeChanging = 'true'
+    window.setTimeout(() => { delete root.dataset.themeChanging }, 680)
+    setTheme((current) => current === 'morning' ? 'night' : 'morning')
+  }
   return <SiteThemeContext.Provider value={{ theme, toggleTheme }}>{children}</SiteThemeContext.Provider>
 }
 

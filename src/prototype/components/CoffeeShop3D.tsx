@@ -299,5 +299,5 @@ export function CoffeeShop3D({ reducedMotion, theme }: Props) {
     }
   }, [reducedMotion, theme])
 
-  return <div ref={shellRef} className="coffee-shop-3d" data-ready="loading"><canvas ref={canvasRef} role="img" aria-label="Royal 3D coffee shop interior" /></div>
+  return <div ref={shellRef} className="coffee-shop-3d" data-ready="loading"><canvas key={theme} ref={canvasRef} role="img" aria-label="Royal 3D coffee shop interior" /></div>
 }
