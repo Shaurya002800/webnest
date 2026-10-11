@@ -92,10 +92,9 @@ export function StreetSystem({ reducedMotion }: Props) {
     >
       <div className="street-system__sticky">
         <div className="street-system__camera">
-          {theme === 'morning' ? <img className="street-system__arrival-plate" src="/assets/reference/street-arrival-morning.jpg" alt="" aria-hidden="true" /> : null}
           <ViewportScene label="street-city"><Suspense fallback={null}><StreetCity3D reducedMotion={reducedMotion} theme={theme} /></Suspense></ViewportScene>
         </div>
-        <img className="street-system__route" src="/assets/generated/street-route.png" alt="" aria-hidden="true" />
+        <svg className="street-system__route" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 760C220 760 215 580 450 580S685 685 850 530 1060 300 1480 260" /></svg>
         <div className="street-system__shade" aria-hidden="true" />
 
         <div className="street-system__intro">

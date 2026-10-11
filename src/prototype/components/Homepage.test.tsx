@@ -17,17 +17,17 @@ describe('homepage conversion and FAQ', () => {
     expect(screen.getByText(/projects depend on scope/i)).toBeVisible()
   })
 
-  it('uses a morning exterior building plate by default', () => {
+  it('uses a city-free connected-system canvas after the hero', () => {
     render(<Homepage />)
     expect(screen.getByTestId('hero-exterior-journey')).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /sunlit city building in the morning/i })).toHaveAttribute('src', '/assets/morning/frame2.png')
+    expect(document.querySelector('.exterior-system-wordmark')).toHaveTextContent(/one connected system/i)
   })
 
   it('uses one continuous morning hero journey instead of repeating the room in a second section', () => {
     render(<Homepage />)
     const journey = screen.getByTestId('hero-exterior-journey')
     expect(journey).toContainElement(screen.getByRole('heading', { level: 1, name: /where brands/i }))
-    expect(journey).toContainElement(screen.getByRole('img', { name: /sunlit city building in the morning/i }))
+    expect(journey.querySelector('.exterior-system-wordmark')).toBeInTheDocument()
     expect(journey.querySelectorAll('img[src="/assets/morning/frame1.png"]')).toHaveLength(1)
     expect(journey.querySelector('.exterior-flame-camera')).not.toBeInTheDocument()
     expect(screen.queryByTestId('live-flame')).not.toBeInTheDocument()
