@@ -67,7 +67,7 @@ export function getStreetSystemState(rawProgress: number): StreetSystemState {
     },
     butterfly: {
       x: interpolate(progress, [
-        { progress: 0, value: 32 },
+        { progress: 0, value: 58 },
         { progress: .18, value: 72 },
         { progress: .42, value: 42 },
         { progress: .64, value: 78 },
@@ -75,7 +75,7 @@ export function getStreetSystemState(rawProgress: number): StreetSystemState {
         { progress: 1, value: 58 },
       ]),
       y: interpolate(progress, [
-        { progress: 0, value: 68 },
+        { progress: 0, value: 53 },
         { progress: .18, value: 39 },
         { progress: .42, value: 61 },
         { progress: .64, value: 31 },

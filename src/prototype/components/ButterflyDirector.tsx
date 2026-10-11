@@ -14,6 +14,53 @@ export function ButterflyDirector({ reducedMotion }: Props) {
   useEffect(() => {
     const element = ref.current
     if (!element) return
+    const attractionTargets = '.street-waypoint, .coffee-pillar, .cherry-journey, .apartment-principle, .process-scene__steps button'
+    let attractedTo: Element | null = null
+    const clamp = (value: number, limit: number) => Math.max(-limit, Math.min(limit, value))
+    const resolveTarget = (node: EventTarget | null) => node instanceof Element ? node.closest(attractionTargets) : null
+    const moveToward = (target: Element | null) => {
+      attractedTo = target
+      if (reducedMotion || !target) {
+        element.style.setProperty('--flight-interaction-x', '0px')
+        element.style.setProperty('--flight-interaction-y', '0px')
+        element.dataset.interacting = 'false'
+        return
+      }
+      const rect = target.getBoundingClientRect()
+      if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) return moveToward(null)
+      const xValue = Number.parseFloat(element.style.getPropertyValue('--flight-x') || getComputedStyle(element).getPropertyValue('--flight-x'))
+      const yValue = Number.parseFloat(element.style.getPropertyValue('--flight-y') || getComputedStyle(element).getPropertyValue('--flight-y'))
+      const xUnit = element.style.getPropertyValue('--flight-x') || getComputedStyle(element).getPropertyValue('--flight-x')
+      const yUnit = element.style.getPropertyValue('--flight-y') || getComputedStyle(element).getPropertyValue('--flight-y')
+      const baseX = xValue * (xUnit.includes('vw') ? window.innerWidth / 100 : 1)
+      const baseY = yValue * (yUnit.includes('vh') ? window.innerHeight / 100 : 1)
+      const targetX = rect.left + rect.width / 2
+      const targetY = rect.top + Math.min(rect.height * .38, 44) - 34
+      element.style.setProperty('--flight-interaction-x', `${clamp(targetX - baseX, window.innerWidth * .11)}px`)
+      element.style.setProperty('--flight-interaction-y', `${clamp(targetY - baseY, window.innerHeight * .075)}px`)
+      element.dataset.interacting = 'true'
+    }
+    const onPointerOver = (event: PointerEvent) => {
+      if (event.pointerType === 'touch') return
+      const target = resolveTarget(event.target)
+      if (target && target !== attractedTo) moveToward(target)
+    }
+    const onPointerOut = (event: PointerEvent) => {
+      if (attractedTo && resolveTarget(event.relatedTarget) !== attractedTo) moveToward(resolveTarget(event.relatedTarget))
+    }
+    const onFocusIn = (event: FocusEvent) => {
+      const target = resolveTarget(event.target)
+      if (target) moveToward(target)
+    }
+    const onFocusOut = (event: FocusEvent) => {
+      if (attractedTo && resolveTarget(event.relatedTarget) !== attractedTo) moveToward(resolveTarget(event.relatedTarget))
+    }
+    document.addEventListener('pointerover', onPointerOver)
+    document.addEventListener('pointerout', onPointerOut)
+    document.addEventListener('focusin', onFocusIn)
+    document.addEventListener('focusout', onFocusOut)
+    element.style.setProperty('--flight-interaction-x', '0px')
+    element.style.setProperty('--flight-interaction-y', '0px')
     const applyExteriorState = (state: ExteriorTransitionState) => {
       element.style.setProperty('--flight-x', `${state.butterfly.x}vw`)
       element.style.setProperty('--flight-y', `${state.butterfly.y}vh`)
@@ -75,6 +122,10 @@ export function ButterflyDirector({ reducedMotion }: Props) {
     window.addEventListener('webnest:apartment-progress', onApartmentProgress)
     window.addEventListener('webnest:late-progress', onLateProgress)
     return () => {
+      document.removeEventListener('pointerover', onPointerOver)
+      document.removeEventListener('pointerout', onPointerOut)
+      document.removeEventListener('focusin', onFocusIn)
+      document.removeEventListener('focusout', onFocusOut)
       window.removeEventListener('webnest:exterior-progress', onExteriorProgress)
       window.removeEventListener('webnest:street-progress', onStreetProgress)
       window.removeEventListener('webnest:coffee-progress', onCoffeeProgress)

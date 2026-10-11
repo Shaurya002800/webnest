@@ -28,11 +28,6 @@ export function ExteriorTransition({ reducedMotion, children }: Props) {
       const travel = Math.max(rect.height - window.innerHeight, 1)
       const progress = Math.max(0, Math.min(1, -rect.top / travel))
       const state = getExteriorTransitionState(progress)
-      if (theme === 'morning') {
-        const blendToFlightPath = Math.max(0, 1 - progress / .18)
-        state.butterfly.x -= 32 * blendToFlightPath
-        state.butterfly.y -= 8 * blendToFlightPath
-      }
       element.dataset.phase = state.phase
       element.dataset.heroHidden = state.heroOpacity <= .02 ? 'true' : 'false'
       element.style.setProperty('--transition-progress', String(progress))
@@ -65,14 +60,7 @@ export function ExteriorTransition({ reducedMotion, children }: Props) {
           <div className="exterior-room-layer">
             <img className="exterior-room" src={getScenePlate('heroRoom', theme)} alt={theme === 'morning' ? 'A sunlit studio overlooking the city in the morning' : 'A candlelit studio overlooking a city at night'} />
           </div>
-          <div className="exterior-building" aria-hidden="true">
-            <svg viewBox="0 0 1440 900" preserveAspectRatio="none">
-              <path className="exterior-route-glow" d="M-20 690C180 690 178 390 380 390S560 590 730 590 932 245 1100 245s170 154 360 154" />
-              <path className="exterior-route-line" d="M-20 690C180 690 178 390 380 390S560 590 730 590 932 245 1100 245s170 154 360 154" />
-              {[{x: 180, y: 640}, {x: 380, y: 390}, {x: 730, y: 590}, {x: 1100, y: 245}].map((node, index) => <circle key={index} cx={node.x} cy={node.y} r="7" />)}
-            </svg>
-            <span className="exterior-system-wordmark">One connected system<span>Discover · Convert · Grow</span></span>
-          </div>
+          <img className="exterior-building" src={getScenePlate('building', theme)} alt={theme === 'morning' ? 'Sunlit city building overlooking the morning skyline' : 'A city building with warm windows at night'} />
           <div className="exterior-vignette" aria-hidden="true" />
         </div>
         {theme === 'night' ? <div className="exterior-flame-camera" aria-hidden="true">

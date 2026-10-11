@@ -101,12 +101,6 @@ export function StreetSystem({ reducedMotion }: Props) {
           <p className="eyebrow"><span />How WebNest fixes it</p>
           <h2 id="street-system-title">One connected system for your entire <em>online business.</em></h2>
           <p>WebNest connects discovery, website, enquiries, automation and customer growth into one continuous system.</p>
-          <div className="street-system__sequence" aria-label="System sequence">
-            {['Discover', 'Trust', 'Convert', 'Connect', 'Automate', 'Grow'].map((label, index) => (
-              <span key={label} className={index <= activeStep ? 'is-active' : ''}>{label}</span>
-            ))}
-          </div>
-          <p className="street-system__promise"><strong>Not six separate services.</strong> One system built around your business.</p>
           <a className="street-system__cta" href="#services">Explore what WebNest builds <ArrowRight aria-hidden="true" /></a>
         </div>
 
