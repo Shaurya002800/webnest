@@ -10,6 +10,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Durable WebNest decisions
 
+- Do not render a dotted butterfly route line in the street scene in either theme. Morning and night share the same butterfly flight and interactive attraction behavior.
+- Morning photographic scenes use cream text with restrained dark gradient shading; preserve readable text during apartment hover/focus, audit checks, FAQ expansion, and conversion-page introductions.
+
 - The homepage candle flame must be rendered live in the browser and must not be baked into a static image.
 - The hero butterfly is an independent asset that flies diagonally above and beside the candle while staying inside a narrow, stable altitude band.
 - Keep the butterfly on the same scroll-guided route in morning and night. Smooth the handoffs between scenes and let it gently notice only selected interactive service/process options on hover or keyboard focus; do not make it chase the cursor continuously.
