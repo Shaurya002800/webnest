@@ -1,23 +1,24 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { App } from './App'
 
 afterEach(() => {
   window.history.pushState({}, '', '/')
   window.localStorage.clear()
   delete document.documentElement.dataset.theme
+  vi.restoreAllMocks()
 })
 
 describe('conversion routes', () => {
   it('defaults to morning and restores the night plates when toggled', () => {
     render(<App />)
     expect(document.documentElement).toHaveAttribute('data-theme', 'morning')
-    expect(screen.getByRole('img', { name: /sunlit city building in the morning/i })).toHaveAttribute('src', '/assets/morning/frame2.png')
+    expect(screen.getByRole('img', { name: /sunlit city building.*morning skyline/i })).toHaveAttribute('src', '/assets/optimized/frame2.jpg')
 
     fireEvent.click(screen.getByRole('button', { name: /switch to night theme/i }))
 
     expect(document.documentElement).toHaveAttribute('data-theme', 'night')
-    expect(screen.getByRole('img', { name: /night building outside the studio window/i })).toHaveAttribute('src', '/assets/generated/building-night.png')
+    expect(screen.getByRole('img', { name: /city building with warm windows at night/i })).toHaveAttribute('src', '/assets/optimized/building-night.jpg')
     expect(screen.getByTestId('live-flame')).toBeInTheDocument()
     expect(window.localStorage.getItem('webnest-theme')).toBe('night')
   })
@@ -35,19 +36,38 @@ describe('conversion routes', () => {
   })
 
   it('carries a selected package into the start-project page', () => {
-    window.history.pushState({}, '', '/start-project?package=growth')
+    window.history.pushState({}, '', '/start-project?package=growth&service=automate&industry=clinic')
     render(<App />)
     expect(screen.getByRole('heading', { name: /build the right system around your business/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/starting point/i)).toHaveValue('growth')
+    expect(screen.getByLabelText(/primary service/i)).toHaveValue('automate')
+    expect(screen.getByLabelText(/^industry/i)).toHaveValue('clinic')
   })
 
-  it('validates and completes an enquiry in the prototype', () => {
+  it('validates and delivers an enquiry through the API', async () => {
+    const request = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
     window.history.pushState({}, '', '/start-project')
     render(<App />)
     fireEvent.change(screen.getByLabelText(/^name/i), { target: { value: 'Shaurya' } })
     fireEvent.change(screen.getByLabelText(/^email/i), { target: { value: 'shaurya@example.com' } })
     fireEvent.change(screen.getByLabelText(/what are you trying to build/i), { target: { value: 'A connected growth website.' } })
     fireEvent.click(screen.getByRole('button', { name: /send project brief/i }))
-    expect(screen.getByRole('status')).toHaveTextContent(/brief is ready/i)
+    expect(await screen.findByRole('status')).toHaveTextContent(/brief is with webnest/i)
+    expect(request).toHaveBeenCalledWith('/api/inquiries', expect.objectContaining({ method: 'POST' }))
+  })
+
+  it('renders legal routes and route-specific metadata', async () => {
+    window.history.pushState({}, '', '/privacy')
+    render(<App />)
+    expect(screen.getByRole('heading', { name: /privacy policy/i })).toBeInTheDocument()
+    await waitFor(() => expect(document.title).toBe('Privacy policy — WebNest'))
+    expect(document.querySelector('link[rel="canonical"]')).toHaveAttribute('href', 'http://localhost:3000/privacy')
+  })
+
+  it('renders a noindex not-found view for unknown routes', async () => {
+    window.history.pushState({}, '', '/missing-page')
+    render(<App />)
+    expect(screen.getByRole('heading', { name: /this road ends here/i })).toBeInTheDocument()
+    await waitFor(() => expect(document.querySelector('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow'))
   })
 })

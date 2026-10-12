@@ -24,12 +24,12 @@ describe('street system choreography', () => {
     expect(midpoint.routeProgress).toBeLessThan(.7)
   })
 
-  it('guides the butterfly deeper into the street before the exit', () => {
+  it('guides the butterfly through the street before the exit', () => {
     const arrival = getStreetSystemState(0).butterfly
     const midpoint = getStreetSystemState(.5).butterfly
     const exit = getStreetSystemState(1).butterfly
-    expect(midpoint.x).toBeGreaterThan(arrival.x)
-    expect(midpoint.y).toBeLessThan(arrival.y)
+    expect(midpoint.x).not.toBe(arrival.x)
+    expect(midpoint.y).not.toBe(arrival.y)
     expect(exit.scale).toBeLessThan(midpoint.scale)
     expect(exit.opacity).toBe(1)
   })

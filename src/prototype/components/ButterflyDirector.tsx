@@ -137,7 +137,7 @@ export function ButterflyDirector({ reducedMotion }: Props) {
 
   return (
     <div ref={ref} className="butterfly-director" data-realm="room" aria-hidden="true">
-      <img src="/assets/generated/butterfly.png" alt="" />
+      <img src="/assets/optimized/butterfly.png" alt="" />
     </div>
   )
 }

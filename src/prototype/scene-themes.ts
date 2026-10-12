@@ -2,43 +2,43 @@ import type { SiteTheme } from './SiteTheme'
 
 export const SCENE_PLATES = {
   heroRoom: {
-    morning: '/assets/morning/frame1.png',
-    night: '/assets/generated/hero-room-clean.png',
+    morning: '/assets/optimized/frame1.jpg',
+    night: '/assets/optimized/hero-room-clean.jpg',
   },
   building: {
-    morning: '/assets/morning/frame2.png',
-    night: '/assets/generated/building-night.png',
+    morning: '/assets/optimized/frame2.jpg',
+    night: '/assets/optimized/building-night.jpg',
   },
   cherryGarden: {
-    morning: '/assets/morning/frame5.png',
+    morning: '/assets/optimized/frame5.jpg',
     night: '/assets/reference/cherry-garden-royal.webp',
   },
   apartment: {
-    morning: '/assets/morning/frame6.png',
+    morning: '/assets/optimized/frame6.jpg',
     night: '/assets/reference/apartment-facade-royal.webp',
   },
   selectedWork: {
-    morning: '/assets/morning/frame7.png',
+    morning: '/assets/optimized/frame7.jpg',
     night: '/assets/cinematic/selected-work-bg.jpg',
   },
   process: {
-    morning: '/assets/morning/frame8.png',
+    morning: '/assets/optimized/frame8.jpg',
     night: '/assets/cinematic/process-bg.jpg',
   },
   pricing: {
-    morning: '/assets/morning/frame9.png',
+    morning: '/assets/optimized/frame9.jpg',
     night: '/assets/cinematic/pricing-bg.jpg',
   },
   audit: {
-    morning: '/assets/morning/frame10.png',
+    morning: '/assets/optimized/frame10.jpg',
     night: '/assets/cinematic/audit-bg.jpg',
   },
   faq: {
-    morning: '/assets/morning/frame11.png',
+    morning: '/assets/optimized/frame11.jpg',
     night: '/assets/cinematic/faq-bg.jpg',
   },
   finalRoom: {
-    morning: '/assets/morning/frame1.png',
+    morning: '/assets/optimized/frame1.jpg',
     night: '/assets/cinematic/final-bg.jpg',
   },
 } as const satisfies Record<string, Record<SiteTheme, string>>

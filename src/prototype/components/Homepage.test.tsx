@@ -9,6 +9,14 @@ describe('homepage conversion and FAQ', () => {
     expect(screen.getAllByRole('link', { name: /start a project/i }).every((link) => link.getAttribute('href') === '/start-project')).toBe(true)
   })
 
+  it('links the footer to real sections and legal routes', () => {
+    render(<Homepage />)
+    expect(screen.getByRole('link', { name: 'Solutions' })).toHaveAttribute('href', '#industries')
+    expect(screen.getByRole('link', { name: 'Privacy Policy' })).toHaveAttribute('href', '/privacy')
+    expect(screen.getByRole('link', { name: 'Terms' })).toHaveAttribute('href', '/terms')
+    expect(screen.queryByRole('link', { name: /whatsapp|linkedin|instagram/i })).not.toBeInTheDocument()
+  })
+
   it('opens an FAQ answer', () => {
     render(<Homepage />)
     const question = screen.getByRole('button', { name: /how much does a project cost/i })
@@ -17,18 +25,19 @@ describe('homepage conversion and FAQ', () => {
     expect(screen.getByText(/projects depend on scope/i)).toBeVisible()
   })
 
-  it('uses a city-free connected-system canvas after the hero', () => {
+  it('uses the approved city-building composition after the hero room', () => {
     render(<Homepage />)
-    expect(screen.getByTestId('hero-exterior-journey')).toBeInTheDocument()
-    expect(document.querySelector('.exterior-system-wordmark')).toHaveTextContent(/one connected system/i)
+    const journey = screen.getByTestId('hero-exterior-journey')
+    expect(journey).toBeInTheDocument()
+    expect(journey.querySelector('.exterior-building')).toHaveAttribute('src', '/assets/optimized/frame2.jpg')
   })
 
   it('uses one continuous morning hero journey instead of repeating the room in a second section', () => {
     render(<Homepage />)
     const journey = screen.getByTestId('hero-exterior-journey')
     expect(journey).toContainElement(screen.getByRole('heading', { level: 1, name: /where brands/i }))
-    expect(journey.querySelector('.exterior-system-wordmark')).toBeInTheDocument()
-    expect(journey.querySelectorAll('img[src="/assets/morning/frame1.png"]')).toHaveLength(1)
+    expect(journey.querySelector('.exterior-building')).toBeInTheDocument()
+    expect(journey.querySelectorAll('img[src="/assets/optimized/frame1.jpg"]')).toHaveLength(1)
     expect(journey.querySelector('.exterior-flame-camera')).not.toBeInTheDocument()
     expect(screen.queryByTestId('live-flame')).not.toBeInTheDocument()
   })
@@ -65,7 +74,7 @@ describe('homepage conversion and FAQ', () => {
     const cherry = screen.getByTestId('cherry-garden')
     const apartment = screen.getByTestId('apartment-facade')
     expect(screen.getByRole('region', { name: /more than a website agency/i })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /cinematic apartment façade in morning light/i })).toHaveAttribute('src', '/assets/morning/frame6.png')
+    expect(screen.getByRole('img', { name: /cinematic apartment façade in morning light/i })).toHaveAttribute('src', '/assets/optimized/frame6.jpg')
     expect(apartment.querySelector('canvas')).not.toBeInTheDocument()
     expect(cherry.compareDocumentPosition(apartment) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(container.querySelector('.window-grid')).not.toBeInTheDocument()

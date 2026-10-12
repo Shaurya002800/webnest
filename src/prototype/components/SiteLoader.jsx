@@ -4,8 +4,8 @@ import { useSiteTheme } from '../SiteTheme'
 import { getScenePlate } from '../scene-themes'
 
 const HOME_IMAGES = {
-  morning: [getScenePlate('heroRoom', 'morning'), getScenePlate('building', 'morning'), '/assets/generated/butterfly.png'],
-  night: [getScenePlate('heroRoom', 'night'), getScenePlate('building', 'night'), '/assets/generated/butterfly.png'],
+  morning: [getScenePlate('heroRoom', 'morning'), getScenePlate('building', 'morning'), '/assets/optimized/butterfly.png'],
+  night: [getScenePlate('heroRoom', 'night'), getScenePlate('building', 'night'), '/assets/optimized/butterfly.png'],
 }
 const INQUIRY_IMAGES = {
   morning: [getScenePlate('finalRoom', 'morning')],
@@ -52,10 +52,10 @@ function preloadFont(descriptor) {
 
 export function SiteLoader({ pathname }) {
   const { theme } = useSiteTheme()
-  const isInquiryPage = pathname === '/free-audit' || pathname === '/start-project'
-  const imageSources = (isInquiryPage ? INQUIRY_IMAGES : HOME_IMAGES)[theme]
+  const isUtilityPage = pathname !== '/'
+  const imageSources = (isUtilityPage ? INQUIRY_IMAGES : HOME_IMAGES)[theme]
   const initialImageSources = useRef(imageSources).current
-  const backdrop = getScenePlate(isInquiryPage ? 'finalRoom' : 'heroRoom', theme)
+  const backdrop = getScenePlate(isUtilityPage ? 'finalRoom' : 'heroRoom', theme)
   const [progress, setProgress] = useState(0)
   const [displayProgress, setDisplayProgress] = useState(0)
   const [visible, setVisible] = useState(true)
@@ -74,7 +74,7 @@ export function SiteLoader({ pathname }) {
     const from = flightProgressRef.current
     const distance = Math.abs(progress - from)
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    const duration = reducedMotion ? 0 : 2400 * distance / 100
+    const duration = reducedMotion ? 0 : 1200 * distance / 100
     const startedAt = performance.now()
     const pathLength = path.getTotalLength()
 
@@ -140,7 +140,7 @@ export function SiteLoader({ pathname }) {
 
     const reveal = async () => {
       const loadingLimit = new Promise((resolve) => {
-        timeoutId = window.setTimeout(resolve, 12000)
+        timeoutId = window.setTimeout(resolve, 5000)
       })
       const timedOut = await Promise.race([
         Promise.all(trackedTasks).then(() => false),
@@ -150,16 +150,16 @@ export function SiteLoader({ pathname }) {
       if (cancelled) return
 
       const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-      const minimumTime = reducedMotion ? 350 : 900
-      await wait(Math.max(0, minimumTime - (performance.now() - startedAt), reducedMotion ? 0 : 2400))
+      const minimumTime = reducedMotion ? 250 : 650
+      await wait(Math.max(0, minimumTime - (performance.now() - startedAt)))
       if (cancelled) return
 
       setProgress(100)
-      await wait(reducedMotion ? 0 : timedOut ? 2400 : 200)
+      await wait(reducedMotion ? 0 : timedOut ? 1200 : 160)
       if (cancelled) return
 
       setExiting(true)
-      await wait(reducedMotion ? 50 : 750)
+      await wait(reducedMotion ? 40 : 550)
       if (cancelled) return
 
       document.documentElement.classList.remove('site-is-loading')
@@ -188,10 +188,10 @@ export function SiteLoader({ pathname }) {
         <img src={backdrop} alt="" />
       </div>
       <div className="site-loader__shade" aria-hidden="true" />
-      {!isInquiryPage && <svg className="site-loader__route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      {!isUtilityPage && <svg className="site-loader__route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <path ref={routePathRef} d="M 4 82 C 20 82 85 100 72 38" pathLength="100" />
       </svg>}
-      {!isInquiryPage && <div ref={flightRef} className="site-loader__flight" aria-hidden="true"><img src="/assets/generated/butterfly.png" alt="" /></div>}
+      {!isUtilityPage && <div ref={flightRef} className="site-loader__flight" aria-hidden="true"><img src="/assets/optimized/butterfly.png" alt="" /></div>}
       <div className="site-loader__brand" aria-hidden="true"><span>W</span> WebNest</div>
       <div className="site-loader__content">
         <p className="site-loader__eyebrow"><span /> WebNest <i /> The journey begins</p>
@@ -205,7 +205,7 @@ export function SiteLoader({ pathname }) {
           aria-valuenow={displayProgress}
           aria-valuetext={`${displayProgress}% loaded`}
         >
-          {isInquiryPage && <div className="site-loader__track"><span className="site-loader__fill" style={{ width: `${progress}%` }} /></div>}
+          {isUtilityPage && <div className="site-loader__track"><span className="site-loader__fill" style={{ width: `${progress}%` }} /></div>}
           <div className="site-loader__meta">
             <span>{displayProgress === 100 ? 'The door is open' : ['Setting the room', 'Opening the window', 'Calling in the city'][activeChapter]}</span>
             <strong>{String(displayProgress).padStart(2, '0')}%</strong>
