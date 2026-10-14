@@ -10,6 +10,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Durable WebNest decisions
 
+- The initial commercial workflow is enquiry first: persist the lead, issue a reference, continue the scoped conversation by email/WhatsApp, send a numbered quotation, collect a direct business-UPI deposit, and keep payment pending until the bank credit is manually verified. Do not claim automatic payment verification.
+- Keep the initial workflow within free tiers: D1 for structured lead/payment records, optional Resend transactional email, the regular WhatsApp Business app for conversations, and direct UPI for payment. Keep provider credentials and business details in hosted runtime variables.
+
 - Do not render a dotted butterfly route line in the street scene in either theme. Morning and night share the same butterfly flight and interactive attraction behavior.
 - Morning photographic scenes use cream text with restrained dark gradient shading; preserve readable text during apartment hover/focus, audit checks, FAQ expansion, and conversion-page introductions.
 

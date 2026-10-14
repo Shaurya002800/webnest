@@ -12,6 +12,18 @@ const directorySize = async (url) => {
   }, Promise.resolve(0));
 };
 
+const recordingDb = () => {
+  const calls = [];
+  const DB = {
+    prepare(sql) {
+      const statement = { sql, values: [], bind(...values) { this.values = values; return this; }, async run() { calls.push({ sql: this.sql, values: this.values }); return { success: true }; }, async all() { return { results: [] }; } };
+      return statement;
+    },
+    async batch(statements) { return statements.map(() => ({ results: [] })); },
+  };
+  return { DB, calls };
+};
+
 test("serves existing static assets without a fallback", async () => {
   const calls = [];
   const response = await worker.fetch(new Request("https://example.test/assets/app.js"), {
@@ -73,17 +85,17 @@ test("serves robots and sitemap documents", async () => {
   assert.match(await siteMap.text(), /https:\/\/example\.test\/start-project/);
 });
 
-test("validates inquiry submissions and requires a configured delivery webhook", async () => {
+test("validates inquiry submissions and requires persistent storage", async () => {
   const response = await worker.fetch(new Request("https://example.test/api/inquiries", {
     method: "POST",
     headers: { "content-type": "application/json", origin: "https://example.test" },
     body: JSON.stringify({ kind: "project", fields: { name: "Shaurya", email: "hello@example.com", brief: "Build a connected website." } }),
   }), {});
   assert.equal(response.status, 503);
-  assert.match((await response.json()).message, /not configured/i);
+  assert.match((await response.json()).message, /storage is not configured/i);
 });
 
-test("delivers a clean inquiry payload to the configured webhook", async () => {
+test("stores a clean inquiry, issues a reference and optionally mirrors it to a webhook", async () => {
   const originalFetch = globalThis.fetch;
   let delivered;
   globalThis.fetch = async (_url, init) => {
@@ -91,17 +103,41 @@ test("delivers a clean inquiry payload to the configured webhook", async () => {
     return new Response(null, { status: 202 });
   };
   try {
+    const { DB, calls } = recordingDb();
     const response = await worker.fetch(new Request("https://example.test/api/inquiries", {
       method: "POST",
       headers: { "content-type": "application/json", origin: "https://example.test" },
       body: JSON.stringify({ kind: "audit", fields: { name: "Shaurya", email: "HELLO@example.com", website_confirm: "", unknown: "drop me" } }),
-    }), { INQUIRY_WEBHOOK_URL: "https://hooks.example.test/webnest" });
+    }), { DB, INQUIRY_WEBHOOK_URL: "https://hooks.example.test/webnest", BUSINESS_WHATSAPP_NUMBER: "+91 98765 43210" });
     assert.equal(response.status, 200);
+    const result = await response.json();
+    assert.match(result.reference, /^WN-A-/);
+    assert.equal(result.whatsAppUrl, "https://wa.me/919876543210");
+    assert.equal(calls.length, 1);
     assert.equal(delivered.fields.email, "hello@example.com");
     assert.equal("unknown" in delivered.fields, false);
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("stores direct-UPI references as pending until manual bank verification", async () => {
+  const { DB, calls } = recordingDb();
+  const response = await worker.fetch(new Request("https://example.test/api/payment-confirmations", {
+    method: "POST",
+    headers: { "content-type": "application/json", origin: "https://example.test" },
+    body: JSON.stringify({ fields: { reference: "WN-2026-001", name: "Shaurya", email: "hello@example.com", amount: "5000", utr: "123456789012" } }),
+  }), { DB });
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.status, "pending");
+  assert.match(result.confirmationId, /^WN-PAY-/);
+  assert.equal(calls[0].values[4], 500000);
+});
+
+test("does not expose admin records without the configured access token", async () => {
+  const response = await worker.fetch(new Request("https://example.test/api/admin/records", { headers: { authorization: "Bearer wrong" } }), { ADMIN_ACCESS_TOKEN: "correct" });
+  assert.equal(response.status, 401);
 });
 
 test("keeps analytics dormant until a provider is configured", async () => {

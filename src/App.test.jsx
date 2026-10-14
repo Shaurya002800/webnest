@@ -45,7 +45,7 @@ describe('conversion routes', () => {
   })
 
   it('validates and delivers an enquiry through the API', async () => {
-    const request = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
+    const request = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ ok: true, reference: 'WN-P-20261014-A1B2C3D4' }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
     window.history.pushState({}, '', '/start-project')
     render(<App />)
     fireEvent.change(screen.getByLabelText(/^name/i), { target: { value: 'Shaurya' } })
@@ -54,6 +54,23 @@ describe('conversion routes', () => {
     fireEvent.click(screen.getByRole('button', { name: /send project brief/i }))
     expect(await screen.findByRole('status')).toHaveTextContent(/brief is with webnest/i)
     expect(request).toHaveBeenCalledWith('/api/inquiries', expect.objectContaining({ method: 'POST' }))
+    expect(screen.getByRole('status')).toHaveTextContent('WN-P-20261014-A1B2C3D4')
+  })
+
+  it('renders approved direct-UPI payments as pending manual verification', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ businessName: 'WebNest', businessEmail: '', whatsAppUrl: null, upiId: null }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
+    window.history.pushState({}, '', '/payment?reference=WN-2026-001&amount=5000&purpose=Project%20deposit')
+    render(<App />)
+    expect(screen.getByText('WN-2026-001')).toBeInTheDocument()
+    expect(screen.getByText('₹5,000.00')).toBeInTheDocument()
+    expect(screen.getByText(/does not itself prove payment/i)).toBeInTheDocument()
+  })
+
+  it('keeps the business desk behind an administrator token', () => {
+    window.history.pushState({}, '', '/admin')
+    render(<App />)
+    expect(screen.getByRole('heading', { name: /lead and payment records/i })).toBeInTheDocument()
+    expect(screen.getByLabelText(/access token/i)).toHaveAttribute('type', 'password')
   })
 
   it('renders legal routes and route-specific metadata', async () => {
