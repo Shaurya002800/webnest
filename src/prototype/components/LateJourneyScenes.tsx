@@ -7,8 +7,6 @@ import { CTA_ROUTES } from '../scene-model'
 import { useSiteTheme } from '../SiteTheme'
 import { getScenePlate, type ScenePlateId } from '../scene-themes'
 
-type LateRealm = 'selected-work' | 'process' | 'pricing' | 'audit' | 'faq' | 'final-room'
-
 const projects = [
   { number: '01', name: 'Serenova', category: 'Hospitality / Booking', services: 'Website · Booking Flow · Payments', copy: 'A streamlined experience that lets customers explore services, select options and complete bookings in one flow.', accent: 'amber' },
   { number: '02', name: 'MyPerro', category: 'Pet Tech / Smart Product', services: 'Website · UI/UX · Product Experience', copy: 'A complete digital experience for a smart pet ecosystem, from product discovery to connected user interfaces.', accent: 'copper' },
@@ -47,16 +45,7 @@ const faqs = [
   ["What if I don't know what I need?", "Start with the free audit. We'll identify the gaps and recommend what actually makes sense for your business."],
 ]
 
-const butterflyRoutes: Record<LateRealm, { from: [number, number]; to: [number, number]; endOpacity?: number }> = {
-  'selected-work': { from: [86, 22], to: [34, 34] },
-  process: { from: [34, 34], to: [76, 60] },
-  pricing: { from: [76, 60], to: [27, 40] },
-  audit: { from: [27, 40], to: [82, 67] },
-  faq: { from: [82, 67], to: [36, 42] },
-  'final-room': { from: [36, 42], to: [74, 58], endOpacity: 0 },
-}
-
-function useLateScene(ref: RefObject<HTMLElement | null>, realm: LateRealm, reducedMotion: boolean) {
+function useLateScene(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
     const element = ref.current
     if (!element) return
@@ -66,11 +55,6 @@ function useLateScene(ref: RefObject<HTMLElement | null>, realm: LateRealm, redu
       const travel = Math.max(rect.height + window.innerHeight, 1)
       const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / travel))
       if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-        const route = butterflyRoutes[realm]
-        const x = route.from[0] + (route.to[0] - route.from[0]) * progress
-        const y = route.from[1] + (route.to[1] - route.from[1]) * progress
-        const opacity = reducedMotion ? 0 : Math.max(0, Math.min(1, 1 + ((route.endOpacity ?? 1) - 1) * Math.max(0, (progress - .7) / .3)))
-        window.dispatchEvent(new CustomEvent('webnest:late-progress', { detail: { realm, x, y, scale: .28 + Math.sin(progress * Math.PI) * .12, rotation: -8 + progress * 16, opacity } }))
         element.style.setProperty('--late-progress', String(progress))
       }
       ticking = false
@@ -80,7 +64,7 @@ function useLateScene(ref: RefObject<HTMLElement | null>, realm: LateRealm, redu
     window.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
     return () => { window.removeEventListener('scroll', update); window.removeEventListener('resize', update) }
-  }, [realm, reducedMotion, ref])
+  }, [ref])
 }
 
 function usePlatePointer(reducedMotion: boolean) {
@@ -100,7 +84,7 @@ function ScenePlate({ scene, alt }: { scene: ScenePlateId; alt: string }) {
 export function SelectedWorkScene({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<HTMLElement>(null)
   const [active, setActive] = useState(0)
-  useLateScene(ref, 'selected-work', reducedMotion)
+  useLateScene(ref)
   const onPointerMove = usePlatePointer(reducedMotion)
   return (
     <section ref={ref} className="late-scene selected-work-scene scene" id="work" data-testid="selected-work-scene" data-active-project={active} onPointerMove={onPointerMove}>
@@ -131,7 +115,7 @@ export function SelectedWorkScene({ reducedMotion }: { reducedMotion: boolean })
 export function ProcessScene({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<HTMLElement>(null)
   const [active, setActive] = useState(0)
-  useLateScene(ref, 'process', reducedMotion)
+  useLateScene(ref)
   return (
     <section ref={ref} className="late-scene process-scene scene" id="process" data-testid="process-scene" data-active-step={active} onPointerMove={usePlatePointer(reducedMotion)}>
       <ScenePlate scene="process" alt="" /><div className="late-scene__shade" />
@@ -145,7 +129,7 @@ export function ProcessScene({ reducedMotion }: { reducedMotion: boolean }) {
 
 export function PricingScene({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<HTMLElement>(null)
-  useLateScene(ref, 'pricing', reducedMotion)
+  useLateScene(ref)
   return (
     <section ref={ref} className="late-scene pricing-scene scene" id="pricing" data-testid="pricing-scene" onPointerMove={usePlatePointer(reducedMotion)}>
       <ScenePlate scene="pricing" alt="" /><div className="late-scene__shade" />
@@ -159,7 +143,7 @@ export function PricingScene({ reducedMotion }: { reducedMotion: boolean }) {
 
 export function AuditScene({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<HTMLElement>(null)
-  useLateScene(ref, 'audit', reducedMotion)
+  useLateScene(ref)
   return (
     <section ref={ref} className="late-scene audit-scene scene" id="audit" data-testid="audit-scene" onPointerMove={usePlatePointer(reducedMotion)}>
       <ScenePlate scene="audit" alt="" /><div className="late-scene__shade" />
@@ -171,7 +155,7 @@ export function AuditScene({ reducedMotion }: { reducedMotion: boolean }) {
 export function FaqRoadScene({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<HTMLElement>(null)
   const [open, setOpen] = useState(0)
-  useLateScene(ref, 'faq', reducedMotion)
+  useLateScene(ref)
   return (
     <section ref={ref} className="late-scene faq-road-scene scene" id="faq" data-testid="faq-scene" onPointerMove={usePlatePointer(reducedMotion)}>
       <ScenePlate scene="faq" alt="" /><div className="late-scene__shade" />
@@ -182,7 +166,7 @@ export function FaqRoadScene({ reducedMotion }: { reducedMotion: boolean }) {
 
 export function FinalRoomScene({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<HTMLElement>(null)
-  useLateScene(ref, 'final-room', reducedMotion)
+  useLateScene(ref)
   return (
     <section ref={ref} className="late-scene final-room-scene scene" id="final-cta" data-testid="final-cta-scene" onPointerMove={usePlatePointer(reducedMotion)}>
       <ScenePlate scene="finalRoom" alt="" /><div className="late-scene__shade" />

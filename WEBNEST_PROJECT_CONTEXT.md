@@ -150,11 +150,11 @@ The earlier Figma guidance recommended Next.js, GSAP, Lenis, Rive, Zustand, and 
 - Vitest + Testing Library
 - Native browser scrolling
 - Intersection Observer for media/scene activation
-- Custom progress-state functions and browser events for cross-scene coordination
+- Custom progress-state functions for scroll scenes; events are reserved for the live 3D street and coffee-shop views
 
 ### Installed but not currently central
 
-- `@dgreenheck/ez-tree` is used by the sakura-tree regeneration utility and its tests; the active cherry scene loads the generated GLB.
+- `@dgreenheck/ez-tree` is retained for the sakura-tree source utility and its tests. The active cherry scene uses an optimized image plate and petal video, not the GLB.
 
 ### Not implemented
 

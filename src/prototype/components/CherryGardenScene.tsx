@@ -50,7 +50,7 @@ export function CherryGardenScene({ reducedMotion }: Props) {
     if (!element) return
     let ticking = false
     let currentJourney = -1
-    const applyState = (state: CherryGardenState, announce = true) => {
+    const applyState = (state: CherryGardenState) => {
       element.dataset.phase = state.phase
       element.style.setProperty('--cherry-progress', String(state.progress))
       element.style.setProperty('--cherry-content-opacity', String(state.contentOpacity))
@@ -59,14 +59,12 @@ export function CherryGardenScene({ reducedMotion }: Props) {
         currentJourney = state.activeJourney
         setActiveJourney(state.activeJourney)
       }
-      if (announce) window.dispatchEvent(new CustomEvent('webnest:cherry-progress', { detail: state }))
     }
     const render = () => {
       const rect = element.getBoundingClientRect()
       const travel = Math.max(rect.height - window.innerHeight, 1)
       const progress = Math.max(0, Math.min(1, -rect.top / travel))
-      const visible = rect.top <= window.innerHeight && rect.bottom >= 0
-      applyState(getCherryGardenState(reducedMotion ? .52 : progress), visible)
+      applyState(getCherryGardenState(reducedMotion ? .52 : progress))
       ticking = false
     }
     const update = () => { if (!ticking) { ticking = true; requestAnimationFrame(render) } }
@@ -78,7 +76,6 @@ export function CherryGardenScene({ reducedMotion }: Props) {
 
   const selectJourney = (index: number) => {
     setActiveJourney(index)
-    window.dispatchEvent(new CustomEvent('webnest:cherry-progress', { detail: { ...getCherryGardenState(.18 + index * .12), activeJourney: index } }))
   }
 
   const onPointerMove = (event: PointerEvent<HTMLElement>) => {

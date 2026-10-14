@@ -24,7 +24,7 @@ export function ApartmentFacadeScene({ reducedMotion }: Props) {
     if (!element) return
     let ticking = false
     let currentPrinciple = -1
-    const applyState = (state: ApartmentFacadeState, announce = true) => {
+    const applyState = (state: ApartmentFacadeState) => {
       element.dataset.phase = state.phase
       element.style.setProperty('--apartment-progress', String(state.progress))
       element.style.setProperty('--apartment-content-opacity', String(state.contentOpacity))
@@ -32,14 +32,12 @@ export function ApartmentFacadeScene({ reducedMotion }: Props) {
         currentPrinciple = state.activePrinciple
         setActivePrinciple(state.activePrinciple)
       }
-      if (announce) window.dispatchEvent(new CustomEvent('webnest:apartment-progress', { detail: state }))
     }
     const render = () => {
       const rect = element.getBoundingClientRect()
       const travel = Math.max(rect.height - window.innerHeight, 1)
       const progress = Math.max(0, Math.min(1, -rect.top / travel))
-      const visible = rect.top <= window.innerHeight && rect.bottom >= 0
-      applyState(getApartmentFacadeState(reducedMotion ? .52 : progress), visible)
+      applyState(getApartmentFacadeState(reducedMotion ? .52 : progress))
       ticking = false
     }
     const update = () => { if (!ticking) { ticking = true; requestAnimationFrame(render) } }
@@ -51,7 +49,6 @@ export function ApartmentFacadeScene({ reducedMotion }: Props) {
 
   const selectPrinciple = (index: number) => {
     setActivePrinciple(index)
-    window.dispatchEvent(new CustomEvent('webnest:apartment-progress', { detail: { ...getApartmentFacadeState(.2 + index * .18), activePrinciple: index } }))
   }
 
   const illuminatePrinciple = (index: number) => {

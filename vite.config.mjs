@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { cpSync, mkdirSync, rmSync } from "node:fs";
+import { cpSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 const productionPublicEntries = [
@@ -19,9 +19,6 @@ const productionPublicEntries = [
 const copyProductionAssets = () => ({
   name: "copy-production-assets",
   closeBundle() {
-    for (const directory of ["3d", "cinematic", "generated", "morning", "optimized", "reference"]) {
-      rmSync(resolve("dist/client/assets", directory), { recursive: true, force: true });
-    }
     for (const entry of productionPublicEntries) {
       const source = resolve("public", entry);
       const destination = resolve("dist/client", entry);
@@ -31,7 +28,8 @@ const copyProductionAssets = () => ({
   },
 });
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  publicDir: command === "build" ? false : "public",
   test: {
     environment: "jsdom",
     setupFiles: "./src/test-setup.ts",
@@ -51,4 +49,4 @@ export default defineConfig({
     },
   },
   plugins: [react(), copyProductionAssets()],
-});
+}));

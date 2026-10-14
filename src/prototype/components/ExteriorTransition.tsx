@@ -40,7 +40,6 @@ export function ExteriorTransition({ reducedMotion, children }: Props) {
       element.style.setProperty('--note-one', String(state.notes[0]))
       element.style.setProperty('--note-two', String(state.notes[1]))
       element.style.setProperty('--note-three', String(state.notes[2]))
-      window.dispatchEvent(new CustomEvent('webnest:exterior-progress', { detail: state }))
       ticking = false
     }
 
