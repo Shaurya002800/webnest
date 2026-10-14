@@ -5,7 +5,6 @@ import {
 import { CTA_ROUTES, SCENES } from '../scene-model'
 import { ThemeToggle } from '../SiteTheme'
 import { getMotionPolicy } from '../motion-policy'
-import { ButterflyDirector } from './ButterflyDirector'
 import { ExteriorTransition } from './ExteriorTransition'
 import { StreetSystem } from './StreetSystem'
 import { CoffeeShopScene } from './CoffeeShopScene'
@@ -50,11 +49,11 @@ export function Homepage() {
   const motion = useMotionPolicy()
 
   return <div className={`webnest motion-${motion.tier}`}>
-    <a className="skip-link" href="#main">Skip to content</a><Header /><ButterflyDirector reducedMotion={!motion.continuousFlight} />
+    <a className="skip-link" href="#main">Skip to content</a><Header />
     <main id="main">
       <ExteriorTransition reducedMotion={motion.tier === 'still'}>
         <div className="hero-content"><p className="eyebrow"><span />{SCENES[0].eyebrow}</p><h1 id="hero-title">Where brands<br /><em>become worlds.</em></h1><p>{SCENES[0].description}</p><div className="hero-actions"><a className="button button--primary" href={CTA_ROUTES.audit}>Get a free audit <ArrowRight weight="bold" /></a><a className="button button--ghost" href={CTA_ROUTES.project}>Start a project</a></div></div>
-        <a className="scroll-cue" href="#problems"><span>Follow the light</span><ArrowDown /></a>
+        <a className="scroll-cue" href="#problems"><span>Explore WebNest</span><ArrowDown /></a>
       </ExteriorTransition>
 
       <StreetSystem reducedMotion={motion.tier === 'still'} />

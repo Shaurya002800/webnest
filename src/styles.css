@@ -638,6 +638,19 @@ html[data-theme="morning"] .cherry-garden--media .cherry-journey strong{color:#f
 html[data-theme="morning"] .cherry-garden--media .cherry-journey em{color:#eee6da}
 html[data-theme="morning"] .cherry-garden--media .cherry-garden__closing{border:0;border-top:1px solid rgba(244,235,218,.3);background:none;box-shadow:none;backdrop-filter:none}
 html[data-theme="morning"] .cherry-garden--media .cherry-garden__closing a{border:0;color:#f2c5a3;background:none}
+
+/* Align the live light with the wick in the clean room plate. The flame camera
+   shares the room plate's overscan and scroll transform. */
+.exterior-flame-camera .live-flame{left:calc(50% + max(19.6vw,34.8vh) + 1.8vw);top:68.6%;width:clamp(56px,4.7vw,78px);transform:translate(-50%,-85%);filter:blur(.45px) saturate(.82);mix-blend-mode:screen}
+@media(max-width:650px){.exterior-flame-camera .live-flame{width:clamp(48px,7vw,62px)}}
+
+/* Both themes use the same butterfly asset and flight scale. */
+html[data-theme="morning"] .butterfly-director{width:clamp(76px,7vw,116px)}
+@media(max-width:650px){html[data-theme="morning"] .butterfly-director{width:44px}}
+
+/* Keep the selected-work CTA readable against either city plate. */
+.selected-work-scene__closing a,html[data-theme="morning"] .selected-work-scene__closing a{min-height:44px;padding:.75rem 1rem;border:1px solid #efb38d;color:#fff7ed;background:rgba(20,30,33,.88);box-shadow:0 4px 18px rgba(0,0,0,.35);font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.65);transition:background .2s,border-color .2s,transform .2s}
+.selected-work-scene__closing a:hover,.selected-work-scene__closing a:focus-visible{border-color:#ffe0bc;background:#913d29;transform:translateY(-2px)}
 html[data-theme="morning"] .apartment-facade--plate .apartment-facade__intro{padding:0;border:0;background:none;box-shadow:none}
 html[data-theme="morning"] .apartment-facade--plate .apartment-facade__intro h2{color:#f3ecdf;text-shadow:0 2px 18px rgba(0,0,0,.74)}
 html[data-theme="morning"] .apartment-facade--plate .apartment-principle,html[data-theme="morning"] .apartment-facade--plate .apartment-principle[data-window-active="true"]{border:0;border-top:1px solid rgba(246,233,208,.4);background:none;box-shadow:none;backdrop-filter:none;color:#f0e9de}

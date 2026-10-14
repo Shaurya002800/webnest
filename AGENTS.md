@@ -10,6 +10,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Durable WebNest decisions
 
+- Superseding earlier flight decisions: use a butterfly as the desktop pointer only; remove the independent scroll-following butterfly. Touch devices have no butterfly. Mobile content must flow vertically with readable full content, comfortable tap targets, and no forced horizontal card browsing.
+
+- The live candle flame must sit on the photographic candle wick and remain subtle while the room moves through the scroll transition. Morning and night butterflies use the same visible size. Closing calls to action in the services and business solutions scenes must lead to a useful next step, not loop to their current section.
+
 - The initial commercial workflow is enquiry first: persist the lead, issue a reference, continue the scoped conversation by email/WhatsApp, send a numbered quotation, collect a direct business-UPI deposit, and keep payment pending until the bank credit is manually verified. Do not claim automatic payment verification.
 - Keep the initial workflow within free tiers: D1 for structured lead/payment records, optional Resend transactional email, the regular WhatsApp Business app for conversations, and direct UPI for payment. Keep provider credentials and business details in hosted runtime variables.
 

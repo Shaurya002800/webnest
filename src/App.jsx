@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { ButterflyCursor } from './prototype/components/ButterflyCursor'
 import { Homepage } from './prototype/components/Homepage'
 import { AnalyticsObserver } from './prototype/components/AnalyticsObserver'
 import { InquiryPage } from './prototype/components/InquiryPage'
@@ -26,6 +27,7 @@ export function App() {
 
   return <SiteThemeProvider><>
     <AnalyticsObserver />
+    <ButterflyCursor />
     <SiteLoader pathname={pathname} />
     <RouteMeta title={route?.title || 'Page not found — WebNest'} description={route?.description || 'The requested page could not be found.'} noIndex={!route || pathname === '/admin' || pathname === '/payment'} />
     {pathname === '/free-audit' ? <InquiryPage kind="audit" /> : null}

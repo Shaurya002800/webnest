@@ -1,0 +1,69 @@
+.butterfly-cursor{position:fixed;left:0;top:0;width:32px;height:32px;object-fit:contain;pointer-events:none;z-index:10000;opacity:0;filter:drop-shadow(0 1px 2px #0008)}
+@media(hover:hover) and (pointer:fine){html.butterfly-cursor-active,html.butterfly-cursor-active *{cursor:none!important}}
+@media(hover:none),(pointer:coarse){.butterfly-cursor{display:none}}
+.site-loader__flight{display:none!important}
+@media(max-width:760px){
+  .butterfly-cursor{display:none!important}
+  html.butterfly-cursor-active,html.butterfly-cursor-active *{cursor:auto!important}
+  .coffee-pillar span,.coffee-pillar strong,.coffee-pillar li,.coffee-pillar div,.coffee-pillar p{font-size:14px!important;line-height:1.6!important}
+  .coffee-shop__intro>p:last-child,.cherry-garden__intro>p:last-child{font-size:15px!important;line-height:1.65!important}
+  html{scroll-padding-top:80px}
+  body{overflow-x:clip}
+  .site-loader{display:none!important}
+  .site-header{height:66px;padding:0 16px}
+  .site-nav{top:66px;max-height:calc(100svh - 66px);overflow:auto}
+  .site-nav a,.menu-toggle,.theme-toggle{min-height:44px;min-width:44px}
+  .scene h2{font-size:clamp(2rem,8.5vw,3rem)!important;line-height:1.08!important}
+  .scene p{font-size:15px;line-height:1.65}
+  .scene .eyebrow{font-size:11px;line-height:1.5;letter-spacing:.13em}
+  .scene a{min-height:44px}
+  .hero-journey .hero-content{left:20px;right:20px;width:auto;max-width:none}
+  .hero-content h1{font-size:clamp(3rem,13vw,4.6rem)}
+  .hero-content .hero-actions{display:grid;gap:12px;max-width:none}
+  .button{min-height:48px;white-space:normal;text-align:center}
+  .building-problems{bottom:7%;gap:12px}
+  .building-problem p{display:block;font-size:13px!important;line-height:1.4!important}
+  .exterior-copy{top:12%}
+  .exterior-copy .scene-copy{font-size:14px}
+  .street-system,.coffee-shop,.cherry-garden,.apartment-facade{height:auto!important;min-height:0!important}
+  .street-system__sticky,.coffee-shop__sticky,.cherry-garden__sticky,.apartment-facade__sticky{position:relative!important;height:auto!important;min-height:0!important;padding:64px 20px!important;overflow:hidden}
+  .street-system__intro,.coffee-shop__intro,.cherry-garden__intro,.apartment-facade__intro{position:relative!important;inset:auto!important;width:auto!important;max-width:none!important;opacity:1!important;transform:none!important;padding:0!important}
+  .street-system__waypoints,.coffee-shop__pillars,.cherry-garden__journeys,.apartment-facade__principles{position:relative!important;inset:auto!important;width:100%!important;height:auto!important;display:grid!important;grid-template-columns:1fr!important;gap:16px!important;margin:32px 0 0!important;padding:0!important;overflow:visible!important;mask-image:none!important;opacity:1!important;transform:none!important}
+  .street-waypoint,.coffee-pillar,.cherry-journey,.apartment-principle{position:relative!important;inset:auto!important;width:100%!important;min-height:0!important;height:auto!important;padding:20px 12px!important;opacity:1!important;transform:none!important;text-align:left}
+  .street-waypoint em,.coffee-pillar p,.coffee-pillar li,.cherry-journey i,.apartment-principle span{font-size:14px!important;line-height:1.55!important}
+  .coffee-shop__menu,.street-system__exit,.coffee-shop__exit,.cherry-garden__exit{display:none!important}
+  .coffee-shop__closing,.cherry-garden__closing,.apartment-facade__statement,.apartment-facade__cta{position:relative!important;inset:auto!important;width:100%!important;margin-top:28px!important;opacity:1!important;transform:none!important}
+  .apartment-facade__statement{font-size:1.35rem!important}
+  .coffee-shop__closing a,.cherry-garden__closing a{font-size:12px!important;min-height:48px;white-space:normal}
+  .street-system__shade,.coffee-shop__shade,.cherry-garden__shade,.apartment-facade__shade{background:linear-gradient(90deg,#071015dd,#071015b8)!important}
+  .late-scene{height:auto!important;min-height:0!important;padding:64px 20px!important}
+  .selected-work-scene__content,.process-scene__copy,.process-scene__steps,.pricing-scene__content,.audit-scene__content,.faq-road-scene__content,.final-room-scene__content{position:relative!important;inset:auto!important;width:100%!important;min-height:0!important;max-width:none!important;padding:0!important;margin:0!important;transform:none!important}
+  .selected-work-scene__projects,.pricing-scene__packages,.audit-scene__checks{display:grid!important;grid-template-columns:1fr!important;gap:16px!important}
+  .project-panel,.pricing-scene__packages article{width:100%;height:auto!important;min-height:0!important;transform:none!important;padding:24px!important}
+  .project-panel p,.project-panel small,.pricing-scene__packages p,.pricing-scene__packages li{font-size:14px!important;line-height:1.6!important}
+  .process-scene__steps{margin-top:32px!important;display:grid!important;grid-template-columns:1fr!important;gap:16px!important}
+  .process-scene__steps button{position:relative!important;inset:auto!important;width:100%!important;transform:none!important}
+  .process-scene__flow{white-space:normal;font-size:13px;line-height:1.8}
+  .audit-scene__checks small,.faq-road-scene__list p{font-size:14px!important;line-height:1.65!important}
+  .faq-road-scene__list button{font-size:14px!important;min-height:60px;gap:16px}
+  .faq-road-scene__list button span:first-child{min-width:0;text-align:left}
+  .final-room-scene__services{flex-wrap:wrap;line-height:2}
+  .footer--cinematic{padding:48px 20px!important;display:block!important}
+  .footer__columns{display:grid!important;grid-template-columns:1fr 1fr!important;gap:24px!important;margin-top:32px}
+  .footer__columns a{display:flex;align-items:center;min-height:44px;font-size:13px}
+  .footer__legal{flex-wrap:wrap;gap:16px;font-size:12px}
+  .inquiry-page{display:block!important;padding:100px 20px 40px!important}
+  .inquiry-page__intro{position:relative!important;inset:auto!important;width:100%!important;padding:0!important;margin-bottom:32px}
+  .inquiry-page__intro h1,.payment-page__intro h1{font-size:clamp(2.6rem,11vw,4rem)!important;line-height:1.05}
+  .inquiry-page__panel{width:100%!important;padding:24px 16px!important}
+  .inquiry-page__field-row{grid-template-columns:1fr!important}
+  input,select,textarea{font-size:16px!important;min-width:0;max-width:100%}
+  input,select{min-height:48px}
+  .inquiry-page label,.payment-confirmation label{font-size:12px!important}
+  .inquiry-page__privacy{font-size:12px!important;line-height:1.6}
+  .inquiry-page__back{left:20px!important;top:24px!important;font-size:11px}
+  .theme-toggle--inquiry{right:16px!important;top:16px!important}
+  .payment-card__summary strong,.admin-records p{overflow-wrap:anywhere}
+  .legal-page,.not-found-page{padding:100px 20px 48px}
+  .legal-page h1,.not-found-page h1{font-size:3rem}
+}

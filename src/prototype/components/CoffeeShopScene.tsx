@@ -86,7 +86,7 @@ export function CoffeeShopScene({ reducedMotion }: Props) {
             </button>
           ))}
         </div>
-        <div className="coffee-shop__closing"><p>Build it. Grow it. Automate it. Keep it <em>working.</em></p><a href="#services">Explore all services <ArrowRight aria-hidden="true" /></a></div>
+        <div className="coffee-shop__closing"><p>Build it. Grow it. Automate it. Keep it <em>working.</em></p><a href="/start-project">Plan my services <ArrowRight aria-hidden="true" /></a></div>
         <p className="coffee-shop__exit" aria-hidden="true">The rear door opens toward the next bloom</p>
       </div>
     </section>

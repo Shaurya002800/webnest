@@ -12,6 +12,7 @@ import "@fontsource/dm-sans/latin-600.css";
 import "@fontsource/dm-sans/latin-700.css";
 import { App } from "./App.jsx";
 import "./styles.css";
+import "./mobile.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

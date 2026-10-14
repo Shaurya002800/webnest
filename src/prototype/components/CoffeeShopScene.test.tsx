@@ -11,7 +11,7 @@ describe('royal coffee shop scene', () => {
     expect(await screen.findByRole('img', { name: /royal 3d coffee shop interior/i })).toBeInTheDocument()
     expect(document.querySelector('.coffee-shop__entry-plate')).toHaveAttribute('src', '/assets/reference/street-arrival-morning.jpg')
     expect(screen.getAllByRole('button')).toHaveLength(4)
-    expect(screen.getByRole('link', { name: /explore all services/i })).toHaveAttribute('href', '#services')
+    expect(screen.getByRole('link', { name: /plan my services/i })).toHaveAttribute('href', '/start-project')
   })
 
   it('lets a visitor inspect a service pillar without scrolling', () => {

@@ -119,7 +119,7 @@ export function CherryGardenScene({ reducedMotion }: Props) {
         <div className="cherry-garden__closing">
           <FlowerLotus weight="thin" aria-hidden="true" />
           <p>Your business has its own customer journey.<br /><em>Your digital system should too.</em></p>
-          <a href="#industries">Explore business solutions <ArrowRight aria-hidden="true" /></a>
+          <a href="/start-project">Discuss my business solution <ArrowRight aria-hidden="true" /></a>
         </div>
         <p className="cherry-garden__exit" aria-hidden="true">Follow the butterfly toward the lit windows</p>
       </div>
