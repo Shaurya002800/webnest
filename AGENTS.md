@@ -10,6 +10,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Durable WebNest decisions
 
+- The confirmed business name is “Web Nest” (two words, ending in Nest); preserve “WebNest” only where it is an intentional visual wordmark.
+
 - The opening loader keeps its butterfly travelling visibly along the drawn route line in both desktop and mobile layouts; the journey butterfly remains a desktop cursor after the loader completes.
 
 - The candle flame should appear like a small translucent real candle flame with soft light and subtle motion, never a large flat layered icon.

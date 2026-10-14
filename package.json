@@ -16,6 +16,7 @@
     "@fontsource/bodoni-moda": "^5.3.0",
     "@fontsource/dm-sans": "^5.3.0",
     "@fontsource/newsreader": "^5.3.0",
+    "@neondatabase/serverless": "^1.2.0",
     "@phosphor-icons/react": "^2.1.10",
     "@vitejs/plugin-react": "5.0.4",
     "qrcode.react": "^4.2.0",

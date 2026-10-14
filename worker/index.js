@@ -137,7 +137,7 @@ const handleInquiry = async (request, env, url) => {
     return json({ message: "Please add a short project brief." }, 400);
   }
 
-  const clientIp = request.headers.get("cf-connecting-ip");
+  const clientIp = request.headers.get("cf-connecting-ip") || request.headers.get("x-vercel-forwarded-for");
   if (clientIp) {
     const now = Date.now();
     const recent = (inquiryAttempts.get(clientIp) || []).filter((timestamp) => now - timestamp < INQUIRY_WINDOW_MS);
