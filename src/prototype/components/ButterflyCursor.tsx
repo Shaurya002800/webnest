@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 export function ButterflyCursor() {
-  const ref = useRef<HTMLImageElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const query = matchMedia('(hover: hover) and (pointer: fine)')
     const hide = () => {
@@ -16,17 +16,30 @@ export function ButterflyCursor() {
       ref.current.style.opacity = '1'
       document.documentElement.classList.add('butterfly-cursor-active')
     }
+    const flap = () => {
+      if (!query.matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      ref.current?.querySelectorAll('img').forEach((wing, index) => {
+        wing.getAnimations().forEach(animation => animation.cancel())
+        wing.animate([
+          { transform: 'perspective(90px) rotateY(0deg)' },
+          { transform: `perspective(90px) rotateY(${index ? -72 : 72}deg)` },
+          { transform: 'perspective(90px) rotateY(0deg)' },
+        ], { duration: 180, iterations: 3, easing: 'ease-in-out' })
+      })
+    }
+    document.addEventListener('pointerdown', flap)
     document.addEventListener('pointermove', move)
     document.addEventListener('pointerleave', hide)
     window.addEventListener('blur', hide)
     query.addEventListener('change', hide)
     return () => {
       hide()
+      document.removeEventListener('pointerdown', flap)
       document.removeEventListener('pointermove', move)
       document.removeEventListener('pointerleave', hide)
       window.removeEventListener('blur', hide)
       query.removeEventListener('change', hide)
     }
   }, [])
-  return <img ref={ref} className="butterfly-cursor" src="/assets/optimized/butterfly.png" alt="" aria-hidden="true" />
+  return <div ref={ref} className="butterfly-cursor" aria-hidden="true"><img className="cursor-wing cursor-wing--left" src="/assets/optimized/butterfly.png" alt="" /><img className="cursor-wing cursor-wing--right" src="/assets/optimized/butterfly.png" alt="" /></div>
 }

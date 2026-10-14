@@ -108,6 +108,9 @@ export function CherryGardenScene({ reducedMotion }: Props) {
           <h2 id="cherry-title">Different businesses.<br />Different needs.<br /><em>One WebNest.</em></h2>
           <p>WebNest adapts the system around how your customers discover, contact and buy from your business.</p>
         </div>
+        <div className="mobile-disclosures" aria-label="Explore business solutions">
+          {journeys.map(({ number, title, items }) => <details key={number} name="mobile-industries"><summary><span>{number}</span>{title}<span className="disclosure-mark" aria-hidden="true">+</span></summary><ul>{items.map(item => <li key={item}>{item}</li>)}</ul><a href="/start-project">Discuss your business →</a></details>)}
+        </div>
         <div className="cherry-garden__journeys" aria-label="Business journeys">
           {journeys.map(({ number, title, items, Icon }, index) => (
             <button key={title} type="button" className={`cherry-journey cherry-journey--${index + 1}`} aria-label={`${number} ${title}: ${items.join(', ')}`} aria-pressed={activeJourney === index} data-active={activeJourney === index} onClick={() => selectJourney(index)} onFocus={() => selectJourney(index)} onPointerEnter={() => selectJourney(index)}>

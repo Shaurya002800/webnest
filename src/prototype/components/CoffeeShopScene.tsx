@@ -79,6 +79,9 @@ export function CoffeeShopScene({ reducedMotion }: Props) {
           <strong>WEBNEST</strong><span>Digital growth system</span>
           <dl><div><dt>Espresso</dt><dd>2.50</dd></div><div><dt>Americano</dt><dd>2.80</dd></div><div><dt>Build</dt><dd>3.20</dd></div><div><dt>Grow</dt><dd>3.50</dd></div></dl>
         </aside>
+        <div className="mobile-disclosures" aria-label="Explore our services">
+          {pillars.map(({ number, title, summary, detail }) => <details key={number} name="mobile-services"><summary><span>{number}</span>{title}<span className="disclosure-mark" aria-hidden="true">+</span></summary><p>{summary}</p><ul>{detail.split(' · ').map(item => <li key={item}>{item}</li>)}</ul><a href={`/start-project?service=${title.toLowerCase()}`}>Discuss this service →</a></details>)}
+        </div>
         <div className="coffee-shop__pillars" aria-label="Four connected WebNest services">
           {pillars.map(({ number, title, summary, detail, Icon }, index) => (
             <button key={number} type="button" className="coffee-pillar" aria-label={`${number} ${title}: ${summary} ${detail}`} aria-pressed={activePillar === index} data-active={activePillar === index} onClick={() => setActivePillar(index)} onFocus={() => setActivePillar(index)} onPointerEnter={() => setActivePillar(index)}>

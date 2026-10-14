@@ -29,6 +29,7 @@ describe('LiveFlame', () => {
       moveTo: vi.fn(),
       bezierCurveTo: vi.fn(),
       closePath: vi.fn(),
+      clip: vi.fn(),
       fill: vi.fn(),
       ellipse: vi.fn(),
     }
@@ -36,8 +37,9 @@ describe('LiveFlame', () => {
 
     render(<LiveFlame reducedMotion />)
 
-    expect(context.fill).toHaveBeenCalledTimes(4)
-    expect(context.ellipse).toHaveBeenCalledWith(60, 145, 6, 8, 0, 0, Math.PI * 2)
+    expect(context.fill).toHaveBeenCalledTimes(1)
+    expect(context.clip).toHaveBeenCalledTimes(1)
+    expect(context.fillRect).toHaveBeenCalled()
   })
 
   it('pauses its animation whenever the hero is outside the viewport', () => {

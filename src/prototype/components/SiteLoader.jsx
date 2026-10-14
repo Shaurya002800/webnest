@@ -58,7 +58,7 @@ export function SiteLoader({ pathname }) {
   const backdrop = getScenePlate(isUtilityPage ? 'finalRoom' : 'heroRoom', theme)
   const [progress, setProgress] = useState(0)
   const [displayProgress, setDisplayProgress] = useState(0)
-  const [visible, setVisible] = useState(() => window.innerWidth > 760)
+  const [visible, setVisible] = useState(true)
   const [exiting, setExiting] = useState(false)
   const routePathRef = useRef(null)
   const flightRef = useRef(null)
@@ -113,11 +113,6 @@ export function SiteLoader({ pathname }) {
 
   useEffect(() => {
     let cancelled = false
-    if (window.innerWidth <= 760) {
-      document.documentElement.classList.remove('site-is-loading')
-      setVisible(false)
-      return
-    }
     const timers = []
     let timeoutId
     const startedAt = performance.now()
@@ -160,11 +155,11 @@ export function SiteLoader({ pathname }) {
       if (cancelled) return
 
       setProgress(100)
-      await wait(reducedMotion ? 0 : timedOut ? 1200 : 160)
+      await wait(reducedMotion ? 0 : 1200)
       if (cancelled) return
 
       setExiting(true)
-      await wait(reducedMotion ? 40 : 550)
+      await wait(reducedMotion ? 40 : 400)
       if (cancelled) return
 
       document.documentElement.classList.remove('site-is-loading')

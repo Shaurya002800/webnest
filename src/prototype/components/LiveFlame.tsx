@@ -4,82 +4,66 @@ type LiveFlameProps = { reducedMotion?: boolean }
 
 function drawFlame(context: CanvasRenderingContext2D, time: number) {
   context.clearRect(0, 0, 120, 180)
+  const sway = Math.sin(time / 530) * 2.3 + Math.sin(time / 197) * .8
+  const breath = Math.sin(time / 280) * 2 + Math.sin(time / 83) * .7
+  const tip = 60 + sway * 1.25
+  const base = 146
+
+  const glow = context.createRadialGradient(60, 127, 1, 60, 117, 43)
+  glow.addColorStop(0, 'rgba(255,192,102,.34)')
+  glow.addColorStop(.36, 'rgba(255,125,43,.14)')
+  glow.addColorStop(1, 'rgba(255,100,20,0)')
+  context.fillStyle = glow
+  context.fillRect(15, 65, 90, 100)
+
+  // One asymmetrical, translucent body; light is layered inside it rather than
+  // outlined as three solid nested silhouettes.
+  const traceFlame = () => {
+    context.beginPath()
+    context.moveTo(60, base)
+    context.bezierCurveTo(54, 139, 49 + sway * .2, 128, 49 + sway * .35, 113)
+    context.bezierCurveTo(48 + sway * .55, 95, 55 + sway * .6, 81, tip, 69 + breath)
+    context.bezierCurveTo(61 + sway * .7, 86, 72 + sway * .3, 97, 71 + sway * .25, 115)
+    context.bezierCurveTo(70, 131, 65, 142, 60, base)
+    context.closePath()
+  }
+
   context.save()
-  context.translate(0, 174)
-  context.scale(1, 1.3)
-  context.translate(0, -149)
-
-  const slowSway = Math.sin(time / 410) * 3.8
-  const quickSway = Math.sin(time / 79) * 1.6
-  const flutter = Math.sin(time / 31) * 1.2 + Math.sin(time / 53) * 0.8
-  const lean = slowSway + quickSway
-  const tipX = 60 + lean
-  const tipY = 32 - flutter
-
-  const halo = context.createRadialGradient(60, 128, 2, 60, 124, 43)
-  halo.addColorStop(0, 'rgba(255,154,62,.2)')
-  halo.addColorStop(.48, 'rgba(255,103,27,.08)')
-  halo.addColorStop(1, 'rgba(255,74,12,0)')
-  context.fillStyle = halo
-  context.fillRect(12, 74, 96, 92)
-
-  context.save()
-  context.lineJoin = 'round'
-  context.shadowColor = 'rgba(255,112,30,.28)'
-  context.shadowBlur = 9
-  context.beginPath()
-  context.moveTo(60, 149)
-  context.bezierCurveTo(51, 142, 41 + slowSway * .35, 127, 41 + quickSway, 109 + flutter)
-  context.bezierCurveTo(39 + quickSway, 89, 48 + slowSway * .5, 69, 55 + lean * .55, 52)
-  context.bezierCurveTo(58 + lean * .8, 45, tipX - 1, 37, tipX, tipY)
-  context.bezierCurveTo(65 + lean, 52, 77 + quickSway, 67, 79 + quickSway, 88)
-  context.bezierCurveTo(83 + slowSway, 112, 74, 137, 60, 149)
-  context.closePath()
-  const envelope = context.createLinearGradient(60, 31, 60, 149)
-  envelope.addColorStop(0, 'rgba(255,112,23,.32)')
-  envelope.addColorStop(.28, 'rgba(255,119,20,.65)')
-  envelope.addColorStop(.72, 'rgba(255,146,31,.92)')
-  envelope.addColorStop(1, 'rgba(255,193,75,.96)')
-  context.fillStyle = envelope
+  context.shadowColor = 'rgba(255,119,36,.62)'
+  context.shadowBlur = 18
+  const amber = context.createLinearGradient(48, 78, 72, 143)
+  amber.addColorStop(0, 'rgba(255,138,42,.04)')
+  amber.addColorStop(.32, 'rgba(255,148,45,.36)')
+  amber.addColorStop(.72, 'rgba(255,176,68,.65)')
+  amber.addColorStop(1, 'rgba(255,207,105,.76)')
+  context.fillStyle = amber
+  traceFlame()
   context.fill()
   context.restore()
 
-  context.beginPath()
-  context.moveTo(60, 146)
-  context.bezierCurveTo(52, 137, 48 + quickSway, 124, 49 + quickSway, 108)
-  context.bezierCurveTo(50, 91, 57 + lean * .45, 77, 61 + lean * .7, 62 + flutter)
-  context.bezierCurveTo(67 + lean * .55, 78, 72 + quickSway, 95, 71 + quickSway, 112)
-  context.bezierCurveTo(71, 128, 67, 140, 60, 146)
-  context.closePath()
-  const innerFlame = context.createLinearGradient(60, 61, 60, 146)
-  innerFlame.addColorStop(0, 'rgba(255,175,54,.22)')
-  innerFlame.addColorStop(.38, 'rgba(255,190,68,.64)')
-  innerFlame.addColorStop(1, 'rgba(255,224,126,.9)')
-  context.fillStyle = innerFlame
-  context.fill()
-
-  context.beginPath()
-  context.moveTo(60, 145)
-  context.bezierCurveTo(56, 137, 55, 128, 57 + quickSway * .25, 118)
-  context.bezierCurveTo(58, 111, 60, 105, 62 + lean * .2, 99 + flutter)
-  context.bezierCurveTo(66, 113, 66, 128, 63, 138)
-  context.bezierCurveTo(62, 142, 61, 144, 60, 145)
-  context.closePath()
-  const hotCore = context.createLinearGradient(60, 98, 60, 145)
-  hotCore.addColorStop(0, 'rgba(255,247,200,.08)')
-  hotCore.addColorStop(.42, 'rgba(255,248,211,.72)')
-  hotCore.addColorStop(1, 'rgba(255,255,226,.96)')
-  context.fillStyle = hotCore
-  context.fill()
-
-  const blueBase = context.createRadialGradient(60, 146, 0, 60, 146, 7)
-  blueBase.addColorStop(0, 'rgba(179,206,255,.5)')
-  blueBase.addColorStop(1, 'rgba(122,168,255,0)')
-  context.fillStyle = blueBase
-  context.beginPath()
-  context.ellipse(60, 145, 6, 8, 0, 0, Math.PI * 2)
-  context.fill()
+  context.save()
+  traceFlame()
+  context.clip()
+  const warmth = context.createRadialGradient(60 + sway * .25, 128, 1, 60 + sway * .25, 121, 25)
+  warmth.addColorStop(0, 'rgba(255,247,189,.9)')
+  warmth.addColorStop(.35, 'rgba(255,206,105,.6)')
+  warmth.addColorStop(1, 'rgba(255,152,46,0)')
+  context.fillStyle = warmth
+  context.fillRect(44, 83, 34, 65)
   context.restore()
+
+  const core = context.createRadialGradient(60, 140, 0, 60, 134, 11)
+  core.addColorStop(0, 'rgba(255,255,228,.94)')
+  core.addColorStop(.55, 'rgba(255,240,182,.45)')
+  core.addColorStop(1, 'rgba(255,217,133,0)')
+  context.fillStyle = core
+  context.fillRect(49, 122, 22, 25)
+
+  const wick = context.createLinearGradient(60, 145, 60, 153)
+  wick.addColorStop(0, 'rgba(57,39,34,.9)')
+  wick.addColorStop(1, 'rgba(20,16,17,0)')
+  context.fillStyle = wick
+  context.fillRect(59, 145, 2, 8)
 }
 
 export function LiveFlame({ reducedMotion = false }: LiveFlameProps) {

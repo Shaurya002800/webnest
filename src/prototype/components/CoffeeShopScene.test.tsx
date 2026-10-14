@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import * as THREE from 'three'
 import { getCoffeeShopLightingProfile } from './CoffeeShop3D'
@@ -19,8 +19,8 @@ describe('royal coffee shop scene', () => {
     const automate = screen.getByRole('button', { name: /03 automate/i })
     fireEvent.click(automate)
     expect(automate).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText('WhatsApp Automation')).toBeVisible()
-    expect(screen.getByText('AI Assistants')).toBeVisible()
+    expect(within(automate).getByText('WhatsApp Automation')).toBeVisible()
+    expect(within(automate).getByText('AI Assistants')).toBeVisible()
   })
 
   it('keeps warm practical light stronger than the ember accent', () => {

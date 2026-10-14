@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { CherryGardenScene } from './CherryGardenScene'
 
@@ -23,7 +23,7 @@ describe('cherry blossom business-journey scene', () => {
     const clinics = screen.getByRole('button', { name: /03 clinics/i })
     fireEvent.click(clinics)
     expect(clinics).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText('Patient Enquiries')).toBeVisible()
-    expect(screen.getByText('Follow-ups')).toBeVisible()
+    expect(within(clinics).getByText('Patient Enquiries')).toBeVisible()
+    expect(within(clinics).getByText('Follow-ups')).toBeVisible()
   })
 })

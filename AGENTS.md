@@ -10,6 +10,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Durable WebNest decisions
 
+- The opening loader keeps its butterfly travelling visibly along the drawn route line in both desktop and mobile layouts; the journey butterfly remains a desktop cursor after the loader completes.
+
+- The candle flame should appear like a small translucent real candle flame with soft light and subtle motion, never a large flat layered icon.
+
+- Desktop butterfly wings flap only in response to clicks, then rest. Mobile styling should be minimal and spacious, with service and industry details revealed on demand rather than showing every list at once.
+
 - Superseding earlier flight decisions: use a butterfly as the desktop pointer only; remove the independent scroll-following butterfly. Touch devices have no butterfly. Mobile content must flow vertically with readable full content, comfortable tap targets, and no forced horizontal card browsing.
 
 - The live candle flame must sit on the photographic candle wick and remain subtle while the room moves through the scroll transition. Morning and night butterflies use the same visible size. Closing calls to action in the services and business solutions scenes must lead to a useful next step, not loop to their current section.
