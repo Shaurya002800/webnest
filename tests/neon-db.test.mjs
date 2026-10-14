@@ -16,5 +16,5 @@ test('creates compatible tables and safely binds D1-style parameters for Neon', 
   assert.match(calls[0].sql, /^CREATE TABLE IF NOT EXISTS leads/)
   assert.deepEqual(calls.at(-2), { sql: 'INSERT INTO leads (id, name) VALUES ($1, $2)', values: ['WN-A-1', "O'Brien"] })
   assert.deepEqual(calls.at(-1), { sql: 'SELECT id FROM leads WHERE name = $1', values: ["O'Brien"] })
-  assert.equal(calls.filter(call => call.sql.startsWith('CREATE TABLE')).length, 2)
+  assert.equal(calls.filter(call => call.sql.startsWith('CREATE TABLE')).length, 3)
 })

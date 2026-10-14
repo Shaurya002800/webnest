@@ -19,6 +19,14 @@ const schema = [
   )`,
   'CREATE UNIQUE INDEX IF NOT EXISTS payment_utr_idx ON payment_confirmations(utr)',
   'CREATE INDEX IF NOT EXISTS payment_reference_idx ON payment_confirmations(quote_reference, created_at DESC)',
+  `CREATE TABLE IF NOT EXISTS payment_quotes (
+    reference TEXT PRIMARY KEY, token_hash TEXT NOT NULL,
+    amount_paise BIGINT NOT NULL CHECK (amount_paise > 0),
+    purpose TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'active'
+      CHECK (status IN ('active', 'paid', 'void')),
+    created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+  )`,
+  'CREATE INDEX IF NOT EXISTS payment_quotes_created_at_idx ON payment_quotes(created_at DESC)',
 ]
 
 export function createNeonDatabase(connectionString, query) {

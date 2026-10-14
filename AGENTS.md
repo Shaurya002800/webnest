@@ -11,6 +11,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ## Durable WebNest decisions
 
 - The confirmed business name is “Web Nest” (two words, ending in Nest); preserve “WebNest” only where it is an intentional visual wordmark.
+- The first launch target is Vercel with Neon for lead records. Keep UPI manual and quotation-first; the approved amount must come from server-side storage, never from editable payment-link query parameters. Hold deployment changes until the user is ready to deploy the completed flow together.
 
 - The opening loader keeps its butterfly travelling visibly along the drawn route line in both desktop and mobile layouts; the journey butterfly remains a desktop cursor after the loader completes.
 

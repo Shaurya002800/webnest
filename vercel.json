@@ -4,6 +4,14 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist/client",
   "regions": ["iad1"],
+  "headers": [
+    { "source": "/payment", "headers": [{ "key": "Referrer-Policy", "value": "no-referrer" }] },
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "X-Frame-Options", "value": "DENY" },
+      { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+    ] }
+  ],
   "rewrites": [
     { "source": "/api/:route*", "destination": "/api/handler?route=:route*" },
     { "source": "/(.*)", "destination": "/index.html" }

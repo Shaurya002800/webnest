@@ -57,11 +57,13 @@ describe('conversion routes', () => {
     expect(screen.getByRole('status')).toHaveTextContent('WN-P-20261014-A1B2C3D4')
   })
 
-  it('renders approved direct-UPI payments as pending manual verification', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ businessName: 'WebNest', businessEmail: '', whatsAppUrl: null, upiId: null }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
-    window.history.pushState({}, '', '/payment?reference=WN-2026-001&amount=5000&purpose=Project%20deposit')
+  it('loads payment amount from the approved server-side quotation', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async url => new Response(JSON.stringify(String(url).startsWith('/api/quotes/')
+      ? { reference: 'WN-2026-001', amountPaise: 500000, purpose: 'Project deposit', businessName: 'Web Nest', upiId: null }
+      : { businessName: 'Web Nest', businessEmail: '', whatsAppUrl: null, upiId: null }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
+    window.history.pushState({}, '', '/payment?reference=WN-2026-001&token=abcdefghijklmnopqrstuvwxyz1234567890ABCDE&amount=1')
     render(<App />)
-    expect(screen.getByText('WN-2026-001')).toBeInTheDocument()
+    expect(await screen.findByText('WN-2026-001')).toBeInTheDocument()
     expect(screen.getByText('₹5,000.00')).toBeInTheDocument()
     expect(screen.getByText(/does not itself prove payment/i)).toBeInTheDocument()
   })

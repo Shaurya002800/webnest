@@ -1,10 +1,13 @@
 import worker from '../worker/index.js'
 import { createNeonDatabase } from '../server/neon-db.js'
+import { handleQuote, markQuotePaid } from '../server/quotes.js'
 
 let database
 
 const allowedRoute = path => path === '/api/inquiries'
   || path === '/api/payment-confirmations'
+  || path === '/api/admin/quotes'
+  || /^\/api\/quotes\/WN-[A-Z0-9-]{4,44}$/.test(path)
   || path === '/api/business-config'
   || path === '/api/events'
   || path === '/api/admin/records'
@@ -24,12 +27,16 @@ export default {
       database ||= createNeonDatabase(env.DATABASE_URL)
       env.DB = database
     }
-    // An unsigned URL amount is not an approved quote. Keep the Vercel
-    // payment endpoint and payee details closed until server-side quotes exist.
-    if (path === '/api/payment-confirmations') return Response.json({ message: 'Payment verification is being configured.' }, { status: 503 })
+    if (path === '/api/admin/quotes' || path.startsWith('/api/quotes/') || path === '/api/payment-confirmations') {
+      try { return await handleQuote(routedRequest, env, env.DB, path) }
+      catch { return Response.json({ message: 'The payment service is temporarily unavailable.' }, { status: 503 }) }
+    }
     if (path === '/api/business-config') delete env.BUSINESS_UPI_ID
     try {
-      return await worker.fetch(routedRequest, env)
+      const recordUpdate = path.startsWith('/api/admin/records/payment/') && request.method === 'PATCH' ? routedRequest.clone() : null
+      const response = await worker.fetch(routedRequest, env)
+      if (recordUpdate && response.ok) await markQuotePaid(recordUpdate, env, env.DB, path)
+      return response
     } catch {
       return Response.json({ message: 'The service is temporarily unavailable.' }, { status: 503 })
     }
