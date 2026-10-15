@@ -18,6 +18,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The candle flame should appear like a small translucent real candle flame with soft light and subtle motion, never a large flat layered icon.
 
 - Desktop butterfly wings flap only in response to clicks, then rest. Mobile styling should be minimal and spacious, with service and industry details revealed on demand rather than showing every list at once.
+- Mobile process steps need clearly legible light text on consistently dark surfaces in both themes, including the active and focused states.
+- On mobile, the expanded navigation and pricing custom-quote action must maintain clear text/background contrast in morning and night modes.
+- Conversion and legal pages keep their back links clearly visible and comfortably tappable over photographic or dark backgrounds on phones.
 
 - Superseding earlier flight decisions: use a butterfly as the desktop pointer only; remove the independent scroll-following butterfly. Touch devices have no butterfly. Mobile content must flow vertically with readable full content, comfortable tap targets, and no forced horizontal card browsing.
 
